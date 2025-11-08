@@ -2,7 +2,9 @@
 	"name": "ansrcli",
 	"version": "0.0.0",
 	"license": "MIT",
-	"bin": "dist/cli.js",
+	"bin": {
+		"ansr": "dist/cli.js"
+	},
 	"type": "module",
 	"engines": {
 		"node": ">=16"
