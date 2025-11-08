@@ -1,4 +1,3 @@
-import express from "express";
 import multer from "multer";
 import fs from "fs/promises";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -19,9 +18,6 @@ if (!API_KEY) {
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 const fileManager = new GoogleAIFileManager(API_KEY);
-
-// serve the static test.html and any other files in this folder
-app.use(express.static(path.resolve('.')));
 
 app.post("/upload", upload.single("file"), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
@@ -81,13 +77,4 @@ Do not include explanations, markdown, or any text outside the JSON.` },
     await fs.unlink(filePath).catch(() => {});
     return res.status(500).json({ error: err?.message ?? String(err) });
   }
-});
-
-app.get("/", (req, res) => {
-  // static middleware will already serve test.html at /test.html; this ensures root returns the page too.
-  res.sendFile(path.resolve("test.html"));
-});
-
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
 });
