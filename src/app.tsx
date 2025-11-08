@@ -5,7 +5,8 @@ import BigText from "ink-big-text";
 import fs from "fs";
 import path from "path";
 import type { QuizFile, UserAnswer, GradeResult } from "./types/quizTypes.js";
-import { generateQuizFromPdf, gradeQuiz, writeArtifact } from "./helpers.js";
+import { gradeQuiz, writeArtifact } from "./helpers.js";
+import { generateQuizFromPdf } from "./aiClient.js";
 import QuizRunner from "./quizRunner.js";
 import InputLine from "./components/inputline2.js";
 

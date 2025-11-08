@@ -1,24 +1,46 @@
 import type { QuizFile, UserAnswer, GradeResult } from "./types/quizTypes.js";
-// import { callModelForQuiz, callModelForGrading } from "./aiClient.js";
-import { QUIZ_GEN_PROMPT, QUIZ_GRADE_PROMPT } from "./prompts.js";
-import { callModelForQuiz, callModelForGrading } from "./aiClient.gemini.js";
 import fs from "fs";
 import path from "path";
 
-export async function generateQuizFromPdf(pdfPath: string): Promise<QuizFile> {
-  const res = await callModelForQuiz(pdfPath, QUIZ_GEN_PROMPT);
-  const json = safeJson(res.content, "Quiz JSON");
-  validateQuiz(json);
-  return json as QuizFile;
-}
-
 export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<GradeResult> {
-  const payloadQuiz = JSON.stringify(quiz);
-  const payloadAns = JSON.stringify({ answers });
-  const res = await callModelForGrading(payloadQuiz, payloadAns, QUIZ_GRADE_PROMPT);
-  const json = safeJson(res.content, "Grade JSON");
-  validateGrade(json);
-  return json as GradeResult;
+  // Simple client-side grading
+  const items = answers.map((a) => {
+    const q = quiz.questions.find(q => q.id === a.id);
+    if (!q) {
+      return {
+        id: a.id,
+        correct: false,
+        feedback: "Question not found"
+      };
+    }
+
+    let correct = false;
+    const userValue = a.value.trim().toLowerCase();
+    
+    if (q.type === "true_false") {
+      correct = userValue === String(q.answer).toLowerCase();
+    } else if (q.type === "multiple_choice") {
+      correct = userValue === q.answer?.toLowerCase();
+    } else if (q.type === "short_answer") {
+      correct = userValue === q.answer?.toLowerCase();
+    }
+
+    return {
+      id: a.id,
+      correct,
+      expected: String(q.answer),
+      feedback: correct ? "Correct!" : `Expected: ${q.answer}`
+    };
+  });
+
+  const score = items.filter(item => item.correct).length;
+
+  return {
+    score,
+    total: answers.length,
+    items,
+    summary: `You got ${score} out of ${answers.length} correct (${Math.round(score / answers.length * 100)}%).`
+  };
 }
 
 // robust JSON parse with helpful errors

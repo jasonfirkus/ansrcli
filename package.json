@@ -19,6 +19,7 @@
 	],
 	"dependencies": {
 		"@google/generative-ai": "^0.24.1",
+		"dotenv": "^17.2.3",
 		"ink": "^4.1.0",
 		"ink-big-text": "^2.0.0",
 		"ink-gradient": "^3.0.0",
