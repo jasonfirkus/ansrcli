@@ -6,23 +6,25 @@ import App from "./app.js";
 
 const cli = meow(
 	`
-	Usage
-	  $ ansrcli <filePath>
+  Usage
+    $ ansr quiz <quizFile.json>
 
-	Options
-		filePath  Path to pptx/pdf
+  Options
+    --file, -f   Path to quiz JSON (alternative to positional)
 
-	Examples
-	  $ ansrcli ./Downloads/lecture15.pptx
+  Examples
+    $ ansr quiz ./data/sorting_quiz.json
 `,
 	{
 		importMeta: import.meta,
 		flags: {
-			filePath: {
-				type: "string",
-			},
+			file: { type: "string", alias: "f" },
 		},
 	}
 );
 
-render(<App filePath={cli.flags.filePath} />);
+// Expect "quiz" as the first positional command
+const [cmd, maybePath] = cli.input;
+const filePath = cli.flags.file || maybePath || "";
+
+render(<App filePath={cmd === "quiz" ? filePath : ""} />);

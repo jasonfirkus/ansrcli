@@ -1,0 +1,140 @@
+{
+	"title": "Sorting Algorithms Quiz",
+	"questions": [
+		{
+			"id": 1,
+			"type": "true_false",
+			"question": "All sorting algorithms produce the same order of steps, only their runtimes differ.",
+			"answer": false
+		},
+		{
+			"id": 2,
+			"type": "short_answer",
+			"question": "What are the four sorting algorithms discussed in the slides?",
+			"answer": "Insertion Sort, Selection Sort, Merge Sort, Quick Sort"
+		},
+		{
+			"id": 3,
+			"type": "multiple_choice",
+			"question": "Which of the following best describes the purpose of sorting algorithms?",
+			"options": [
+				"A) To organize data for easier searching",
+				"B) To compress data efficiently",
+				"C) To remove duplicates",
+				"D) To randomize data order"
+			],
+			"answer": "A"
+		},
+		{
+			"id": 4,
+			"type": "short_answer",
+			"question": "In insertion sort, how is the array conceptually divided during sorting?",
+			"answer": "It is divided into a sorted part and an unsorted part."
+		},
+		{
+			"id": 5,
+			"type": "true_false",
+			"question": "In insertion sort, the 'key' element is always compared to the right-most element first.",
+			"answer": false
+		},
+		{
+			"id": 6,
+			"type": "multiple_choice",
+			"question": "In insertion sort, what happens when the left-most element is greater than the key?",
+			"options": [
+				"A) The key replaces that element",
+				"B) The larger element is shifted right",
+				"C) The algorithm skips to the next iteration",
+				"D) The loop exits"
+			],
+			"answer": "B"
+		},
+		{
+			"id": 7,
+			"type": "short_answer",
+			"question": "Write the condition inside the while loop that keeps moving elements in insertion sort.",
+			"answer": "while (y >= 0 && arr[y] > key)"
+		},
+		{
+			"id": 8,
+			"type": "short_answer",
+			"question": "How does selection sort find the correct element to place in the sorted part each iteration?",
+			"answer": "It finds the smallest element in the unsorted part and swaps it with the first unsorted element."
+		},
+		{
+			"id": 9,
+			"type": "multiple_choice",
+			"question": "What variable name is typically used to track the lowest value during selection sort?",
+			"options": ["A) pivot", "B) min", "C) key", "D) index"],
+			"answer": "B"
+		},
+		{
+			"id": 10,
+			"type": "true_false",
+			"question": "In selection sort, each iteration moves the largest remaining value to the end of the array.",
+			"answer": false
+		},
+		{
+			"id": 11,
+			"type": "short_answer",
+			"question": "What is the purpose of the swap() function in selection sort?",
+			"answer": "It exchanges the positions of the current index and the found minimum value."
+		},
+		{
+			"id": 12,
+			"type": "short_answer",
+			"question": "Merge sort uses what strategy to break down and solve problems?",
+			"answer": "Divide and conquer."
+		},
+		{
+			"id": 13,
+			"type": "multiple_choice",
+			"question": "Which of the following is NOT a key step in merge sort?",
+			"options": ["A) Divide", "B) Conquer", "C) Shuffle", "D) Merge"],
+			"answer": "C"
+		},
+		{
+			"id": 14,
+			"type": "short_answer",
+			"question": "Why does merge sort require an auxiliary array?",
+			"answer": "It temporarily stores merged results while combining sorted halves."
+		},
+		{
+			"id": 15,
+			"type": "true_false",
+			"question": "Merge sort can operate entirely in-place without any additional memory.",
+			"answer": false
+		},
+		{
+			"id": 16,
+			"type": "short_answer",
+			"question": "What happens after both halves of an array are sorted in merge sort?",
+			"answer": "They are merged together into a single sorted array."
+		},
+		{
+			"id": 17,
+			"type": "short_answer",
+			"question": "What is the main purpose of the pivot element in quicksort?",
+			"answer": "To divide the array into two sublists — one with smaller values and one with larger values."
+		},
+		{
+			"id": 18,
+			"type": "multiple_choice",
+			"question": "What is the worst-case time complexity of quicksort?",
+			"options": ["A) O(n log n)", "B) O(n²)", "C) O(log n)", "D) O(1)"],
+			"answer": "B"
+		},
+		{
+			"id": 19,
+			"type": "short_answer",
+			"question": "Why does always choosing the left-most element as the pivot cause O(n²) behavior on sorted arrays?",
+			"answer": "Because the partitions become unbalanced, causing many unnecessary recursive calls."
+		},
+		{
+			"id": 20,
+			"type": "true_false",
+			"question": "Quicksort performs poorly on arrays with many repeated elements.",
+			"answer": true
+		}
+	]
+}
