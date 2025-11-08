@@ -1,0 +1,47 @@
+{
+	"title": "Comparing Strings",
+	"questions": [
+		{
+			"id": 1,
+			"type": "true_false",
+			"question": "It is generally recommended to compare strings for equality using the '==' operator in Java.",
+			"answer": false
+		},
+		{
+			"id": 2,
+			"type": "multiple_choice",
+			"question": "Which method is used to compare strings while ignoring case differences?",
+			"options": [
+				"A) .equals()",
+				"B) .equalsIgnoreCase()",
+				"C) .compareTo()",
+				"D) =="
+			],
+			"answer": "B) .equalsIgnoreCase()"
+		},
+		{
+			"id": 3,
+			"type": "short_answer",
+			"question": "What is the Unicode value for the uppercase letter 'A'?",
+			"answer": "65"
+		},
+		{
+			"id": 4,
+			"type": "multiple_choice",
+			"question": "Which method returns an integer indicating if a string is lexicographically before, after, or the same as another string?",
+			"options": [
+				"A) .equals()",
+				"B) .equalsIgnoreCase()",
+				"C) .compareTo()",
+				"D) System.compareStrings()"
+			],
+			"answer": "C) .compareTo()"
+		},
+		{
+			"id": 5,
+			"type": "short_answer",
+			"question": "What is the Unicode value for the lowercase letter 'z'?",
+			"answer": "122"
+		}
+	]
+}

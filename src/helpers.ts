@@ -1,7 +1,7 @@
-// quizPipeline.ts
 import type { QuizFile, UserAnswer, GradeResult } from "./types/quizTypes.js";
-import { callModelForQuiz, callModelForGrading } from "./aiClient.js";
+// import { callModelForQuiz, callModelForGrading } from "./aiClient.js";
 import { QUIZ_GEN_PROMPT, QUIZ_GRADE_PROMPT } from "./prompts.js";
+import { callModelForQuiz, callModelForGrading } from "./aiClient.gemini.js";
 import fs from "fs";
 import path from "path";
 

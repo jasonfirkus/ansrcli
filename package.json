@@ -18,6 +18,7 @@
 		"dist"
 	],
 	"dependencies": {
+		"@google/generative-ai": "^0.24.1",
 		"ink": "^4.1.0",
 		"ink-big-text": "^2.0.0",
 		"ink-gradient": "^3.0.0",

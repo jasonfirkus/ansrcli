@@ -1,4 +1,3 @@
-// app.tsx
 import React, { useEffect, useState } from "react";
 import { Box, Text } from "ink";
 import Gradient from "ink-gradient";
@@ -18,7 +17,6 @@ export default function App({ filePath = "" }: { filePath?: string }) {
 	const [result, setResult] = useState<GradeResult | null>(null);
 	const [err, setErr] = useState<string | null>(null);
 
-	// Load JSON directly or generate from PDF
 	useEffect(() => {
 		if (!filePath) return;
 
@@ -27,10 +25,6 @@ export default function App({ filePath = "" }: { filePath?: string }) {
 
 		(async () => {
 			try {
-				setErr(null);
-				setResult(null);
-				setQuiz(null);
-
 				if (!fs.existsSync(abs)) {
 					setPhase("error");
 					setErr(`File not found: ${abs}`);
@@ -41,9 +35,8 @@ export default function App({ filePath = "" }: { filePath?: string }) {
 					setPhase("loading");
 					const raw = fs.readFileSync(abs, "utf8");
 					const parsed = JSON.parse(raw) as QuizFile;
-					if (!parsed?.questions?.length) {
+					if (!parsed?.questions?.length)
 						throw new Error("Quiz JSON has no questions.");
-					}
 					setQuiz(parsed);
 					setPhase("quiz");
 					return;
