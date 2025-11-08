@@ -1,29 +1,28 @@
 #!/usr/bin/env node
-import React from 'react';
-import {render} from 'ink';
-import meow from 'meow';
-import App from './app.js';
+import React from "react";
+import { render } from "ink";
+import meow from "meow";
+import App from "./app.js";
 
 const cli = meow(
 	`
 	Usage
-	  $ ansrcli
+	  $ ansrcli <filePath>
 
 	Options
-		--name  Your name
+		filePath  Path to pptx/pdf
 
 	Examples
-	  $ ansrcli --name=Jane
-	  Hello, Jane
+	  $ ansrcli ./Downloads/lecture15.pptx
 `,
 	{
 		importMeta: import.meta,
 		flags: {
-			name: {
-				type: 'string',
+			filePath: {
+				type: "string",
 			},
 		},
-	},
+	}
 );
 
-render(<App name={cli.flags.name} />);
+render(<App filePath={cli.flags.filePath} />);

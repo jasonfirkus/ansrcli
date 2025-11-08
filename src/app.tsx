@@ -1,14 +1,12 @@
 import React from "react";
 import { Text } from "ink";
+import Gradient from "ink-gradient";
+import BigText from "ink-big-text";
 
-type Props = {
-	name: string | undefined;
-};
-
-export default function App({ name = "Ansr" }: Props) {
+export default function App({ filePath = "downloads" }: { filePath?: string }) {
 	return (
-		<Text>
-			Hello, <Text color="redBright">{name}</Text>
-		</Text>
+		<Gradient name="mind">
+			<BigText text="ansr" font="block" letterSpacing={3} />
+		</Gradient>
 	);
 }
