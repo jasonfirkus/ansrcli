@@ -9,6 +9,7 @@ import { gradeQuiz, writeArtifact } from "./helpers.js";
 import { generateQuizFromPdf } from "./aiClient.js";
 import QuizRunner from "./quizRunner.js";
 import InputLine from "./components/inputline2.js";
+import Spinner from "ink-spinner";
 
 type Phase = "idle" | "loading" | "gen" | "quiz" | "grading" | "done" | "error";
 
@@ -94,7 +95,12 @@ export default function App({ filePath = "" }: { filePath?: string }) {
 			)}
 
 			{phase === "loading" && <Text>Loading quiz JSON…</Text>}
-			{phase === "gen" && <Text>Generating quiz from PDF…</Text>}
+			{phase === "gen" && (
+				<Text>
+					{" "}
+					<Spinner type="dots" /> Generating quiz from PDF…
+				</Text>
+			)}
 			{phase === "quiz" && quiz && (
 				<QuizRunner quiz={quiz} onComplete={onQuizComplete} />
 			)}
