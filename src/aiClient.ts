@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { GoogleAIFileManager } from "@google/generative-ai/server";
 import path from "path";
 import "dotenv/config";
-import type { QuizFile } from "./types/quizTypes.js";
+import type { QuizFile, UserAnswer, GradeResult } from "./types/quizTypes.js";
 
 const API_KEY = process.env["GOOGLE_API_KEY"];
 
@@ -100,4 +100,67 @@ Do not include explanations, markdown, text or formatting outside the JSON.`,
   } catch (parseErr) {
     throw new Error(`Failed to parse quiz JSON: ${parseErr}`);
   }
+}
+
+/**
+ * Grades a quiz by comparing user answers to expected answers.
+ * Uses simple string comparison for grading.
+ */
+export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<GradeResult> {
+  const items = answers.map((a) => {
+    const q = quiz.questions.find(q => q.id === a.id);
+    if (!q) {
+      return {
+        id: a.id,
+        correct: false,
+        feedback: "Question not found"
+      };
+    }
+
+    let correct = false;
+    const userValue = a.value.trim().toLowerCase();
+    
+    if (q.type === "true_false") {
+      correct = userValue === String(q.answer).toLowerCase();
+    } else if (q.type === "multiple_choice") {
+      correct = userValue === q.answer?.toLowerCase();
+    } else if (q.type === "short_answer") {
+      correct = userValue === q.answer?.toLowerCase();
+    }
+
+    return {
+      id: a.id,
+      correct,
+      expected: String(q.answer),
+      feedback: correct ? "Correct!" : `Expected: ${q.answer}`
+    };
+  });
+
+  const score = items.filter(item => item.correct).length;
+
+  return {
+    score,
+    total: answers.length,
+    items,
+    summary: `You got ${score} out of ${answers.length} correct (${Math.round(score / answers.length * 100)}%).`
+  };
+}
+
+/**
+ * Ensures the .ansr directory exists and returns its path.
+ */
+export function ensureDataDir() {
+  const dir = path.resolve(".ansr");
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+  return dir;
+}
+
+/**
+ * Writes an artifact (quiz, grade result, etc.) to the .ansr directory.
+ */
+export function writeArtifact(name: string, data: any) {
+  const dir = ensureDataDir();
+  const p = path.join(dir, name);
+  fs.writeFileSync(p, typeof data === "string" ? data : JSON.stringify(data, null, 2), "utf8");
+  return p;
 }
