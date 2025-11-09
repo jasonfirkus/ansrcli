@@ -17,13 +17,8 @@ const QuizPhase = ({
   numQuestions: number;
 }) => {
   const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
-  console.log("🚀 ~ QuizPhase.tsx ~ QuizPhase ~ currentQuestionNum: ", currentQuestionNum);
-
   const response = JSON.parse(fs.readFileSync(quizPath, "utf8"));
-  console.log("🚀 ~ QuizPhase.tsx ~ QuizPhase ~ response: ", response);
-
   const currentQuestion = response.questions[currentQuestionNum];
-  console.log("🚀 ~ QuizPhase.tsx ~ QuizPhase ~ currentQuestion: ", currentQuestion);
 
   function writeAnswer(answer: string) {
     response[currentQuestionNum].answer = answer;
@@ -42,6 +37,7 @@ const QuizPhase = ({
       )}
       {currentQuestion.type == "mc" && (
         <MultipleChoiceQuestion
+          options={currentQuestion.options}
           setCurrentQNum={setCurrentQuestionNum}
           numQuestions={numQuestions}
           writeAnswer={writeAnswer}
