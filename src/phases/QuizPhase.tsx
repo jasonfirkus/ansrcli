@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import type Phase from "../types/phase.js";
 import fs from "fs";
 import ShortAnswerQuestion from "../components/Questions/ShortAnswerQuestion.js";
-import type QuestionType from "../types/question.js";
 import MultipleChoiceQuestion from "../components/Questions/MultipleChoiceQuestion.js";
 import TrueFalseQuestion from "../components/Questions/TrueFalseQuestion.js";
 import { Text, Box } from "ink";
 import { useInput } from "ink";
+import { Footer } from "../components/Footer.js";
 
 const QuizPhase = ({
   quizPath,
@@ -20,7 +20,10 @@ const QuizPhase = ({
   const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
   const quiz = JSON.parse(fs.readFileSync(quizPath, "utf8"));
   const currentQuestion = quiz.questions[currentQuestionNum];
-  console.log("🚀 ~ QuizPhase.tsx ~ QuizPhase ~ currentQuestion: ", currentQuestion);
+  console.log(
+    "🚀 ~ QuizPhase.tsx ~ QuizPhase ~ currentQuestion: ",
+    currentQuestion
+  );
 
   function writeAnswer(answer: string) {
     quiz.questions[currentQuestionNum].answer = answer;
@@ -29,7 +32,7 @@ const QuizPhase = ({
 
   useInput((input, key) => {
     if (key.rightArrow) {
-      setCurrentQuestionNum(qNum => {
+      setCurrentQuestionNum((qNum) => {
         const nextQIndex = qNum + 1;
 
         if (nextQIndex > numQuestions - 1) return qNum;
@@ -41,7 +44,7 @@ const QuizPhase = ({
     }
 
     if (key.leftArrow) {
-      setCurrentQuestionNum(qNum => {
+      setCurrentQuestionNum((qNum) => {
         const prevQIndex = qNum - 1;
 
         if (prevQIndex < 0) return qNum;
@@ -55,40 +58,42 @@ const QuizPhase = ({
 
   return (
     <Box flexDirection="column">
-      <Text>{`Q${currentQuestionNum + 1} ${currentQuestion?.content}`}</Text>
+      <Box flexGrow={1} flexDirection="column" justifyContent="center">
+        <Text>{`Q${currentQuestionNum + 1} ${currentQuestion?.content}`}</Text>
 
-      {currentQuestion?.type == "short" && (
-        <ShortAnswerQuestion
-          setCurrentQNum={setCurrentQuestionNum}
-          numQuestions={numQuestions}
-          writeAnswer={writeAnswer}
-          currentQuestion={currentQuestion}
-          setPhase={setPhase}
-        />
-      )}
+        {currentQuestion?.type == "short" && (
+          <ShortAnswerQuestion
+            setCurrentQNum={setCurrentQuestionNum}
+            numQuestions={numQuestions}
+            writeAnswer={writeAnswer}
+            currentQuestion={currentQuestion}
+            setPhase={setPhase}
+          />
+        )}
+        {currentQuestion?.type == "mc" && (
+          <MultipleChoiceQuestion
+            options={currentQuestion.options}
+            setCurrentQNum={setCurrentQuestionNum}
+            numQuestions={numQuestions}
+            writeAnswer={writeAnswer}
+            setPhase={setPhase}
+            currentQNum={currentQuestionNum}
+            currentQuestion={currentQuestion}
+          />
+        )}
+        {currentQuestion?.type == "tf" && (
+          <TrueFalseQuestion
+            setCurrentQNum={setCurrentQuestionNum}
+            numQuestions={numQuestions}
+            writeAnswer={writeAnswer}
+            setPhase={setPhase}
+            currentQNum={currentQuestionNum}
+            currentQuestion={currentQuestion}
+          />
+        )}
+      </Box>
 
-      {currentQuestion?.type == "mc" && (
-        <MultipleChoiceQuestion
-          options={currentQuestion.options}
-          setCurrentQNum={setCurrentQuestionNum}
-          numQuestions={numQuestions}
-          writeAnswer={writeAnswer}
-          setPhase={setPhase}
-          currentQNum={currentQuestionNum}
-          currentQuestion={currentQuestion}
-        />
-      )}
-
-      {currentQuestion?.type == "tf" && (
-        <TrueFalseQuestion
-          setCurrentQNum={setCurrentQuestionNum}
-          numQuestions={numQuestions}
-          writeAnswer={writeAnswer}
-          setPhase={setPhase}
-          currentQNum={currentQuestionNum}
-          currentQuestion={currentQuestion}
-        />
-      )}
+      <Footer />
     </Box>
   );
 };
