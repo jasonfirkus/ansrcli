@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo, memo } from "react";
 import { Box, Text } from "ink";
 import Gradient from "ink-gradient";
 import BigText from "ink-big-text";
