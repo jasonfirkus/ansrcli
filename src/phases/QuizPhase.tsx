@@ -28,7 +28,7 @@ const QuizPhase = ({
 
   useInput((input, key) => {
     if (key.rightArrow) {
-      setCurrentQuestionNum((qNum) => {
+      setCurrentQuestionNum(qNum => {
         const nextQIndex = qNum + 1;
 
         if (nextQIndex > numQuestions - 1) return qNum;
@@ -40,7 +40,7 @@ const QuizPhase = ({
     }
 
     if (key.leftArrow) {
-      setCurrentQuestionNum((qNum) => {
+      setCurrentQuestionNum(qNum => {
         const prevQIndex = qNum - 1;
 
         if (prevQIndex < 0) return qNum;
@@ -55,6 +55,7 @@ const QuizPhase = ({
   return (
     <Box flexDirection="column">
       <Text>{`Q${currentQuestionNum + 1} ${currentQuestion.content}`}</Text>
+
       {currentQuestion.type == "short" && (
         <ShortAnswerQuestion
           setCurrentQNum={setCurrentQuestionNum}
@@ -62,6 +63,7 @@ const QuizPhase = ({
           writeAnswer={writeAnswer}
         />
       )}
+
       {currentQuestion.type == "mc" && (
         <MultipleChoiceQuestion
           options={currentQuestion.options}
@@ -72,6 +74,7 @@ const QuizPhase = ({
           currentQNum={currentQuestionNum}
         />
       )}
+
       {currentQuestion.type == "tf" && (
         <TrueFalseQuestion
           setCurrentQNum={setCurrentQuestionNum}

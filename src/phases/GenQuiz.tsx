@@ -31,7 +31,6 @@ const GenQuiz = ({
   (async () => {
     const quizJSON = await generateQuizFromPdf(sourcePdfPath as string, numQuestions, quizFormat);
     const quizPath = writeQuizJSON(`quiz_${stamp()}.json`, quizJSON);
-    console.log("test", quizPath);
 
     setQuizPath(quizPath);
     setPhase("quiz");
