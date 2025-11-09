@@ -7,7 +7,7 @@ import App from "./app.js";
 const cli = meow(
 	`
   Usage
-    $ ansr <file.pdf|file.json>
+    $ ansr <file.pdf>
 
   Examples
     $ ansr ./data/sorting_quiz.json
