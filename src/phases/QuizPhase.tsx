@@ -5,7 +5,7 @@ import ShortAnswerQuestion from "../components/Questions/ShortAnswerQuestion.js"
 import type QuestionType from "../types/question.js";
 import MultipleChoiceQuestion from "../components/Questions/MultipleChoiceQuestion.js";
 import TrueFalseQuestion from "../components/Questions/TrueFalseQuestion.js";
-import { Text } from "ink";
+import { Text, Box } from "ink";
 
 const QuizPhase = ({
   quizPath,
@@ -18,19 +18,29 @@ const QuizPhase = ({
   const questions = JSON.parse(fs.readFileSync(quizPath, "utf8"));
   const currentQuestion = questions[currentQuestionNum];
 
-  if (currentQuestion.type == "short") {
-    return <ShortAnswerQuestion data={currentQuestion as QuestionType} />;
-  }
-
-  if (currentQuestion.type == "mc") {
-    return <MultipleChoiceQuestion data={currentQuestion as QuestionType} />;
-  }
-
-  if (currentQuestion.type == "tf") {
-    return <TrueFalseQuestion data={currentQuestion as QuestionType} />;
-  }
-
-  return <Text>{"Invalid question "}</Text>;
+  return (
+    <Box flexDirection="column">
+      <Text>{`Q${currentQuestionNum} ${currentQuestion.content}`}</Text>
+      {currentQuestion.type == "short" && (
+        <ShortAnswerQuestion
+          data={currentQuestion as QuestionType}
+          setCurrentQNum={setCurrentQuestionNum}
+        />
+      )}
+      {currentQuestion.type == "mc" && (
+        <MultipleChoiceQuestion
+          data={currentQuestion as QuestionType}
+          setCurrentQNum={setCurrentQuestionNum}
+        />
+      )}
+      {currentQuestion.type == "tf" && (
+        <TrueFalseQuestion
+          data={currentQuestion as QuestionType}
+          setCurrentQNum={setCurrentQuestionNum}
+        />
+      )}
+    </Box>
+  );
 };
 
 export default QuizPhase;
