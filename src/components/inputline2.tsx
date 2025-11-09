@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Text, useInput } from "ink";
 
 export default function InputLine({
-	prompt = "›",
+	prompt = ">",
 	color = "green",
 	onSubmit,
 	onExit,
@@ -30,7 +30,7 @@ export default function InputLine({
 			setBuffer((prev) => prev.slice(0, -1));
 			return;
 		}
-		if (input === "q" || key.escape) {
+		if (key.ctrl && input.toLowerCase() === "q") {
 			onExit?.();
 			process.exit(0);
 			return;
