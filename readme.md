@@ -22,7 +22,7 @@ npm i -g ansrcli
    If you do, then run:
 
 ```bash
-setx ANSRCLI_GOOGLE_KEY "<your key here>"
+setx ANSRCLI_GEMINI_API_KEY "<your key here>"
 ```
 
 3. Run:

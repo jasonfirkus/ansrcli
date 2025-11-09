@@ -20,10 +20,6 @@ const QuizPhase = ({
   const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
   const quiz = JSON.parse(fs.readFileSync(quizPath, "utf8"));
   const currentQuestion = quiz.questions[currentQuestionNum];
-  console.log(
-    "🚀 ~ QuizPhase.tsx ~ QuizPhase ~ currentQuestion: ",
-    currentQuestion
-  );
 
   function writeAnswer(answer: string) {
     quiz.questions[currentQuestionNum].answer = answer;
