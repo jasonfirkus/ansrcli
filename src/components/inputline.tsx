@@ -5,7 +5,6 @@ export default function InputLine({
   prompt = ">",
   color = "green",
   numQuestions,
-  index,
   setCurrentQuestionNum,
   onSubmit,
   onExit,
@@ -13,7 +12,6 @@ export default function InputLine({
   prompt?: string;
   color?: string;
   numQuestions: number;
-  index: number;
   setCurrentQuestionNum: React.Dispatch<React.SetStateAction<number>>;
   onSubmit?: (value: string) => void;
   onExit?: () => void;
