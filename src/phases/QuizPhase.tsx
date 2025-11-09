@@ -37,16 +37,16 @@ const QuizPhase = ({
       )}
       {currentQuestion.type == "mc" && (
         <MultipleChoiceQuestion
-          data={currentQuestion as QuestionType}
           setCurrentQNum={setCurrentQuestionNum}
           numQuestions={numQuestions}
+          currentQNum={currentQuestionNum}
         />
       )}
       {currentQuestion.type == "tf" && (
         <TrueFalseQuestion
-          data={currentQuestion as QuestionType}
           setCurrentQNum={setCurrentQuestionNum}
           numQuestions={numQuestions}
+          currentQNum={currentQuestionNum}
         />
       )}
     </Box>
