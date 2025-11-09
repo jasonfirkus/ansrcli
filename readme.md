@@ -4,6 +4,8 @@ ansrCLI quickly generates quizzes from lecture notes by using Google's Gemini to
 
 We hope this tool is helpful for students learning material through their education joruney.
 
+github repo: [https://github.com/jasonfirkus/ansrcli](https://github.com/jasonfirkus/ansrcli)
+
 ## Install
 
 Please follow these few steps for an initial setup to use ansr.
