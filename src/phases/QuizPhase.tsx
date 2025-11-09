@@ -19,6 +19,7 @@ const QuizPhase = ({
 }) => {
   const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
   const response = JSON.parse(fs.readFileSync(quizPath, "utf8"));
+  const prevAnswer = response.questions[currentQuestionNum].answer ?? "";
   const currentQuestion = response.questions[currentQuestionNum];
 
   function writeAnswer(answer: string) {
@@ -60,6 +61,7 @@ const QuizPhase = ({
           setCurrentQNum={setCurrentQuestionNum}
           numQuestions={numQuestions}
           writeAnswer={writeAnswer}
+          userAnswer={prevAnswer}
         />
       )}
       {currentQuestion.type == "mc" && (

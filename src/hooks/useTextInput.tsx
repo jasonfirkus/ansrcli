@@ -7,18 +7,20 @@ export default function TextInput({
   numQuestions,
   setCurrentQuestionNum,
   onSubmit,
+  userAnswer = "",
 }: {
   prompt?: string;
   color?: string;
   numQuestions: number;
   setCurrentQuestionNum: React.Dispatch<React.SetStateAction<number>>;
   onSubmit: (value: string) => void;
+  userAnswer?: string;
 }) {
-  const [buffer, setBuffer] = useState("");
+  const [buffer, setBuffer] = useState(userAnswer);
   const [cursorVisible, setCursorVisible] = useState(true);
 
   useEffect(() => {
-    const t = setInterval(() => setCursorVisible(v => !v), 500);
+    const t = setInterval(() => setCursorVisible((v) => !v), 500);
     return () => clearInterval(t);
   }, []);
 
@@ -26,7 +28,7 @@ export default function TextInput({
     if (key.return) {
       onSubmit(buffer);
       setBuffer("");
-      setCurrentQuestionNum(qNum => {
+      setCurrentQuestionNum((qNum) => {
         const nextQIndex = qNum + 1;
 
         if (nextQIndex > numQuestions) return qNum; //TODO change to setphase
@@ -36,7 +38,7 @@ export default function TextInput({
       return;
     }
     if (key.backspace) {
-      setBuffer(prev => prev.slice(0, -1));
+      setBuffer((prev) => prev.slice(0, -1));
       return;
     }
 
@@ -44,7 +46,7 @@ export default function TextInput({
       process.exit(0);
       return;
     }
-    if (input) setBuffer(prev => prev + input);
+    if (input) setBuffer((prev) => prev + input);
   });
 
   return (
