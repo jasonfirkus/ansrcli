@@ -75,6 +75,7 @@ const RenderPhase = ({
           sourcePdfPath={sourcePdfPath}
           numQuestions={numQuestions}
           setPhase={setPhase}
+          quizPath={quizPath as string}
         />
       </ErrorBoundary>
     );

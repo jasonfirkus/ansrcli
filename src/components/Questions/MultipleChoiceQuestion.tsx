@@ -31,7 +31,7 @@ const MultipleChoiceQuestion = ({
         writeAnswer(option.value);
 
         if (currentQNum + 1 >= numQuestions) {
-          setPhase("results");
+          setPhase("gen-answers");
           return;
         }
         setCurrentQNum((prev) => prev + 1);

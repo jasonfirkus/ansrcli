@@ -34,7 +34,7 @@ export default function TextInput({
       onSubmit(buffer);
       setBuffer("");
       if (currentQNum + 1 >= numQuestions) {
-        setPhase("results");
+        setPhase("gen-answers");
         return;
       }
       setCurrentQuestionNum((prev) => prev + 1);

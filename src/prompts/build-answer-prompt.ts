@@ -1,6 +1,6 @@
 import type { QuizFile, UserAnswer } from "../types/quizTypes.js";
-
-export default function buildAnswerPrompt(quiz: QuizFile, answers: UserAnswer[]) {
+// answers: UserAnswer[] changed to string[]
+export default function buildAnswerPrompt(quiz: QuizFile, answers: string[]) {
   return `You previously generated a quiz with the following questions and correct answers:
 ${JSON.stringify(quiz, null, 2)}
 

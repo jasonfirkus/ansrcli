@@ -21,10 +21,10 @@ const TrueFalseQuestion = ({
   const handleSelect = (item: { label: string; value: string }) => {
     writeAnswer(item.value);
     if (currentQNum + 1 >= numQuestions) {
-      setPhase("results");
+      setPhase("gen-answers");
       return;
     }
-    setCurrentQNum(prev => prev + 1);
+    setCurrentQNum((prev) => prev + 1);
   };
 
   const items = [
