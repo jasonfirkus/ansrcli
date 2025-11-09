@@ -4,6 +4,7 @@ import { GoogleAIFileManager } from "@google/generative-ai/server";
 import path from "path";
 import "dotenv/config";
 import type { QuizFile, UserAnswer, GradeResult } from "./types/quizTypes.js";
+import buildQuizPrompt from "./prompts/build-quiz-prompt.js";
 
 const API_KEY = process.env["GOOGLE_API_KEY"];
 
@@ -35,7 +36,7 @@ export async function generateQuizFromPdf(localPath: string): Promise<QuizFile> 
   // Poll until processing is complete
   let fileMeta = await fileManager.getFile(uploadResult.file.name);
   while (fileMeta.state === "PROCESSING") {
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise(r => setTimeout(r, 2000));
     fileMeta = await fileManager.getFile(uploadResult.file.name);
   }
 
@@ -51,26 +52,7 @@ export async function generateQuizFromPdf(localPath: string): Promise<QuizFile> 
         fileUri: uploadResult.file.uri,
       },
     },
-    {
-      text: `You are given a PDF of slides. Generate 20 mixed questions
-(short answer, multiple choice, true/false) that fairly cover the material.
-
-Return ONLY valid JSON matching this TypeScript type:
-
-{
-  "title": string,
-  "questions": Array<
-    | {"id": number, "type":"true_false", "question": string, "answer": boolean}
-    | {"id": number, "type":"multiple_choice", "question": string, "options": string[], "answer": string}
-    | {"id": number, "type":"short_answer", "question": string, "answer": string}
-  >
-}
-
-Rules:
-Multiple choice options must be 3-5 items, labeled text like "A) ...", "B) ...".
-Answers must be concise and unambiguous.
-Do not include explanations, markdown, text or formatting outside the JSON.`,
-    },
+    { text: buildQuizPrompt({ numQuestions: 10, format: "mc,short,tf" }) },
   ]);
 
   const raw =
@@ -94,7 +76,7 @@ Do not include explanations, markdown, text or formatting outside the JSON.`,
       .replace(/^```\s*/i, "")
       .replace(/```\s*$/i, "")
       .trim();
-    
+
     const parsed = typeof cleaned === "string" ? JSON.parse(cleaned) : cleaned;
     return parsed as QuizFile;
   } catch (parseErr) {
@@ -107,19 +89,19 @@ Do not include explanations, markdown, text or formatting outside the JSON.`,
  * Uses simple string comparison for grading.
  */
 export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<GradeResult> {
-  const items = answers.map((a) => {
+  const items = answers.map(a => {
     const q = quiz.questions.find(q => q.id === a.id);
     if (!q) {
       return {
         id: a.id,
         correct: false,
-        feedback: "Question not found"
+        feedback: "Question not found",
       };
     }
 
     let correct = false;
     const userValue = a.value.trim().toLowerCase();
-    
+
     if (q.type === "true_false") {
       correct = userValue === String(q.answer).toLowerCase();
     } else if (q.type === "multiple_choice") {
@@ -132,7 +114,7 @@ export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<
       id: a.id,
       correct,
       expected: String(q.answer),
-      feedback: correct ? "Correct!" : `Expected: ${q.answer}`
+      feedback: correct ? "Correct!" : `Expected: ${q.answer}`,
     };
   });
 
@@ -142,7 +124,9 @@ export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<
     score,
     total: answers.length,
     items,
-    summary: `You got ${score} out of ${answers.length} correct (${Math.round(score / answers.length * 100)}%).`
+    summary: `You got ${score} out of ${answers.length} correct (${Math.round(
+      (score / answers.length) * 100
+    )}%).`,
   };
 }
 
