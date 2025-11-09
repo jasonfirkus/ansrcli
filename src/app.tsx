@@ -6,11 +6,8 @@ import fs from "fs";
 import path from "path";
 import type { QuizFile, UserAnswer, GradeResult } from "./types/quizTypes.js";
 import { generateQuizFromPdf, gradeQuiz, writeArtifact } from "./aiClient.js";
-import QuizRunner from "./quizRunner.js";
-import InputLine from "./components/inputline2.js";
-import Spinner from "ink-spinner";
-
-type Phase = "idle" | "loading" | "gen" | "quiz" | "grading" | "done" | "error";
+import RenderPhase from "./RenderPhase.js";
+import QuizFormat from "./types/quiz-format.js";
 
 export default function App({
   filePath = "%USERPROFILE%\\Downloads",
@@ -19,7 +16,7 @@ export default function App({
 }: {
   filePath?: string;
   numQuestions?: number;
-  format?: string;
+  format?: QuizFormat;
 }) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [quiz, setQuiz] = useState<QuizFile | null>(null);
@@ -87,46 +84,12 @@ export default function App({
         <BigText text="ansr" font="block" letterSpacing={3} />
       </Gradient>
 
-      {phase === "idle" && (
-        <Box marginTop={1} flexDirection="column">
-          <Text>Provide a PDF to generate a quiz, or a quiz JSON to run it.</Text>
-          <Text dimColor>Examples:</Text>
-          <Text dimColor> ansr ./slides/sorting.pdf</Text>
-          <Text dimColor> ansr ./data/sorting_quiz.json</Text>
-          <Text>Press Enter to exit.</Text>
-          <InputLine onSubmit={() => process.exit(0)} />
-        </Box>
-      )}
-
-      {phase === "loading" && <Text>Loading quiz JSON…</Text>}
-      {phase === "gen" && (
-        <Text>
-          {" "}
-          <Spinner type="dots" /> Generating quiz from PDF…
-        </Text>
-      )}
-      {phase === "quiz" && quiz && <QuizRunner quiz={quiz} onComplete={onQuizComplete} />}
-      {phase === "grading" && <Text>Grading your answers…</Text>}
-
-      {phase === "done" && result && (
-        <Box flexDirection="column" marginTop={1}>
-          <Text>
-            Score: {result.score} / {result.total}
-          </Text>
-          {result.summary && <Text>{result.summary}</Text>}
-          <Text dimColor>Artifacts saved to ./.ansr</Text>
-          <Text>Press Enter to exit.</Text>
-          <InputLine onSubmit={() => process.exit(0)} />
-        </Box>
-      )}
-
-      {phase === "error" && (
-        <Box flexDirection="column" marginTop={1}>
-          <Text color="red">Error: {err}</Text>
-          <Text>Press Enter to exit.</Text>
-          <InputLine onSubmit={() => process.exit(1)} />
-        </Box>
-      )}
+      <RenderPhase
+        filePath={filePath}
+        numQuestions={numQuestions}
+        quizFormat={format}
+        phase={phase}
+      />
     </Box>
   );
 }
