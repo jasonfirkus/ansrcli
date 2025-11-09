@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import type Phase from "../types/phase.js";
 import fs from "fs";
 import ShortAnswerQuestion from "../components/Questions/ShortAnswerQuestion.js";
-import type QuestionType from "../types/question.js";
 import MultipleChoiceQuestion from "../components/Questions/MultipleChoiceQuestion.js";
 import TrueFalseQuestion from "../components/Questions/TrueFalseQuestion.js";
 import { Text, Box } from "ink";
 import { useInput } from "ink";
+import { Footer } from "../components/Footer.js";
 
 const QuizPhase = ({
   quizPath,
@@ -54,33 +54,37 @@ const QuizPhase = ({
 
   return (
     <Box flexDirection="column">
-      <Text>{`Q${currentQuestionNum + 1} ${currentQuestion.content}`}</Text>
-      {currentQuestion.type == "short" && (
-        <ShortAnswerQuestion
-          setCurrentQNum={setCurrentQuestionNum}
-          numQuestions={numQuestions}
-          writeAnswer={writeAnswer}
-        />
-      )}
-      {currentQuestion.type == "mc" && (
-        <MultipleChoiceQuestion
-          options={currentQuestion.options}
-          setCurrentQNum={setCurrentQuestionNum}
-          numQuestions={numQuestions}
-          writeAnswer={writeAnswer}
-          setPhase={setPhase}
-          currentQNum={currentQuestionNum}
-        />
-      )}
-      {currentQuestion.type == "tf" && (
-        <TrueFalseQuestion
-          setCurrentQNum={setCurrentQuestionNum}
-          numQuestions={numQuestions}
-          writeAnswer={writeAnswer}
-          setPhase={setPhase}
-          currentQNum={currentQuestionNum}
-        />
-      )}
+      <Box flexGrow={1} flexDirection="column" justifyContent="center">
+        <Text>{`Q${currentQuestionNum + 1} ${currentQuestion.content}`}</Text>
+        {currentQuestion.type == "short" && (
+          <ShortAnswerQuestion
+            setCurrentQNum={setCurrentQuestionNum}
+            numQuestions={numQuestions}
+            writeAnswer={writeAnswer}
+          />
+        )}
+        {currentQuestion.type == "mc" && (
+          <MultipleChoiceQuestion
+            options={currentQuestion.options}
+            setCurrentQNum={setCurrentQuestionNum}
+            numQuestions={numQuestions}
+            writeAnswer={writeAnswer}
+            setPhase={setPhase}
+            currentQNum={currentQuestionNum}
+          />
+        )}
+        {currentQuestion.type == "tf" && (
+          <TrueFalseQuestion
+            setCurrentQNum={setCurrentQuestionNum}
+            numQuestions={numQuestions}
+            writeAnswer={writeAnswer}
+            setPhase={setPhase}
+            currentQNum={currentQuestionNum}
+          />
+        )}
+      </Box>
+
+      <Footer />
     </Box>
   );
 };
