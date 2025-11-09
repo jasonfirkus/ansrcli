@@ -25,11 +25,7 @@ npm i -g ansrcli
 setx ANSRCLI_GEMINI_API_KEY "<your key here>"
 ```
 
-3. Run:
-   `npm run setup`
-   to install all dependancies and setup the application
-
-4. You're all set. Whenever you want to take a quiz based on some course material just run
+3. You're all set. Whenever you want to take a quiz based on some course material just run
    `ansr <file_path>`
    and your quiz should start generating and launch right away.
 
