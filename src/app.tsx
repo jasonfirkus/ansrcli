@@ -6,11 +6,8 @@ import fs from "fs";
 import path from "path";
 import type { QuizFile, UserAnswer, GradeResult } from "./types/quizTypes.js";
 import { generateQuizFromPdf, gradeQuiz, writeArtifact } from "./aiClient.js";
-import QuizRunner from "./quizRunner.js";
-import InputLine from "./components/inputline2.js";
-import Spinner from "ink-spinner";
-
-type Phase = "idle" | "loading" | "gen" | "quiz" | "grading" | "done" | "error";
+import RenderPhase from "./RenderPhase.js";
+import QuizFormat from "./types/quiz-format.js";
 
 export default function App({
   filePath = "%USERPROFILE%\\Downloads",
@@ -19,7 +16,7 @@ export default function App({
 }: {
   filePath?: string;
   numQuestions?: number;
-  format?: string;
+  format?: QuizFormat;
 }) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [quiz, setQuiz] = useState<QuizFile | null>(null);
@@ -44,8 +41,7 @@ export default function App({
           setPhase("loading");
           const raw = fs.readFileSync(abs, "utf8");
           const parsed = JSON.parse(raw) as QuizFile;
-          if (!parsed?.questions?.length)
-            throw new Error("Quiz JSON has no questions.");
+          if (!parsed?.questions?.length) throw new Error("Quiz JSON has no questions.");
           setQuiz(parsed);
           setPhase("quiz");
           return;
@@ -88,6 +84,7 @@ export default function App({
         <BigText text="ansr" font="block" letterSpacing={3} />
       </Gradient>
 
+<<<<<<< HEAD
       {phase === "idle" && (
         <Box marginTop={1} flexDirection="column">
           <Text>
@@ -133,6 +130,14 @@ export default function App({
           <InputLine onSubmit={() => process.exit(1)} />
         </Box>
       )}
+=======
+      <RenderPhase
+        filePath={filePath}
+        numQuestions={numQuestions}
+        quizFormat={format}
+        phase={phase}
+      />
+>>>>>>> 3003dd78aec85fa5861d103a28dfb90e31d598d2
     </Box>
   );
 }
