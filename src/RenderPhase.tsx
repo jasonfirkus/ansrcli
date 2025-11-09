@@ -6,12 +6,12 @@ import GenQuiz from "./phases/GenQuiz.js";
 import GenAnswers from "./phases/GenAnswers.js";
 import React, { useState } from "react";
 import QuizFormat from "./types/quiz-format.js";
-
-type Phase = "gen-quiz" | "gen-answers" | "quiz" | "results" | "error";
+import { ErrorBoundary } from "react-error-boundary";
+import type Phase from "./types/phase.js";
 
 // Per-phase parameter types
 type PhaseParams = {
-  "gen-quiz": { filePath: string; numQuestions: number; quizFormat: QuizFormat };
+  "gen-quiz": { filePath?: string; numQuestions: number; quizFormat: QuizFormat };
   "gen-answers": {}; // no params now, expand later if needed
   quiz: {};
   results: {};
@@ -40,7 +40,7 @@ type RenderProps =
 const RenderPhase = (props: RenderProps) => {
   const [phase, setPhase] = useState<Phase>("gen-quiz");
 
-  return RENDER_PHASE[phase](props as any);
+  return <ErrorBoundary>RENDER_PHASE[phase](props as any)</ErrorBoundary>;
 };
 
 export default RenderPhase;
