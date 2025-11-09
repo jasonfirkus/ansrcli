@@ -7,14 +7,12 @@ export default function InputLine({
   numQuestions,
   setCurrentQuestionNum,
   onSubmit,
-  onExit,
 }: {
   prompt?: string;
   color?: string;
   numQuestions: number;
   setCurrentQuestionNum: React.Dispatch<React.SetStateAction<number>>;
-  onSubmit?: (value: string) => void;
-  onExit?: () => void;
+  onSubmit: (value: string) => void;
 }) {
   const [buffer, setBuffer] = useState("");
   const [cursorVisible, setCursorVisible] = useState(true);
