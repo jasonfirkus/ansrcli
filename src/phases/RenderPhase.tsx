@@ -34,12 +34,18 @@ const RenderPhase = ({
       )}
 
       {phase == "quiz" && (
-        <QuizPhase quizPath={quizPath as string} setPhase={setPhase} numQuestions={numQuestions} />
+        <QuizPhase
+          quizPath={quizPath as string}
+          setPhase={setPhase}
+          numQuestions={numQuestions}
+        />
       )}
 
-      {phase == "gen-answers" && <GenAnswers quizPath={quizPath as string} setPhase={setPhase} />}
+      {phase == "gen-answers" && (
+        <GenAnswers quizPath={quizPath as string} setPhase={setPhase} />
+      )}
 
-      {phase == "quiz" && (
+      {phase == "results" && (
         <ResultsPhase
           sourcePdfPath={sourcePdfPath}
           numQuestions={numQuestions}
