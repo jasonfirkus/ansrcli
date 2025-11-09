@@ -1,7 +1,7 @@
 import type Question from "../../types/question.js";
 import { Box, Text } from "ink";
 import React from "react";
-import useTextInput from "../../hooks/useTextInput.js";
+import TextInput from "../../hooks/useTextInput.js";
 import SelectInput from "ink-select-input";
 import Phase from "../../types/phase.js";
 

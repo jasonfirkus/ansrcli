@@ -11,7 +11,7 @@ import type QuizFormat from "../types/quiz-format.js";
 const API_KEY = process.env["ANSRCLI_GOOGLE_API_KEY"];
 
 if (!API_KEY) {
-  throw new Error("Missing GOOGLE_API_KEY environment variable");
+  throw new Error("Missing ANSRCLI_GOOGLE_API_KEY environment variable");
 }
 
 const genAI = new GoogleGenerativeAI(API_KEY);

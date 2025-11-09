@@ -1,7 +1,7 @@
 import type Question from "../../types/question.js";
 import { Box, Text } from "ink";
 import React from "react";
-import useTextInput from "../../hooks/useTextInput.js";
+import TextInput from "../../hooks/useTextInput.js";
 
 const ShortAnswerQuestion = ({
   setCurrentQNum,
@@ -13,7 +13,7 @@ const ShortAnswerQuestion = ({
   numQuestions: number;
 }) => {
   return (
-    <useTextInput
+    <TextInput
       setCurrentQuestionNum={setCurrentQNum}
       onSubmit={raw => writeAnswer(raw)}
       numQuestions={numQuestions}

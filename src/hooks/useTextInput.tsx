@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, useInput } from "ink";
 
-export default function useTextInput({
+export default function TextInput({
   prompt = ">",
   color = "green",
   numQuestions,
