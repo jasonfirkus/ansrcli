@@ -84,60 +84,12 @@ export default function App({
         <BigText text="ansr" font="block" letterSpacing={3} />
       </Gradient>
 
-<<<<<<< HEAD
-      {phase === "idle" && (
-        <Box marginTop={1} flexDirection="column">
-          <Text>
-            Provide a PDF to generate a quiz, or a quiz JSON to run it.
-          </Text>
-          <Text dimColor>Examples:</Text>
-          <Text dimColor> ansr ./slides/sorting.pdf</Text>
-          <Text dimColor> ansr ./data/sorting_quiz.json</Text>
-          <Text>Press Enter to exit.</Text>
-          <InputLine onSubmit={() => process.exit(0)} />
-        </Box>
-      )}
-
-      {phase === "loading" && <Text>Loading quiz JSON…</Text>}
-
-      {phase === "gen" && (
-        <Text>
-          {" "}
-          <Spinner type="dots" /> Generating quiz from PDF…
-        </Text>
-      )}
-
-      {phase === "quiz" && quiz && (
-        <QuizRunner quiz={quiz} onComplete={onQuizComplete} />
-      )}
-      {phase === "grading" && <Text>Grading your answers…</Text>}
-
-      {phase === "done" && result && (
-        <Box flexDirection="column" marginTop={1}>
-          <Text>
-          {result.output ?? `Score: ${result.score} / ${result.total}`}
-          </Text>
-          {/* <Text dimColor>Artifacts saved to ./.ansr</Text> */}
-          {/* <Text>Press Enter to exit.</Text> */}
-          <InputLine onSubmit={() => process.exit(0)} />
-        </Box>
-      )}
-
-      {phase === "error" && (
-        <Box flexDirection="column" marginTop={1}>
-          <Text color="red">Error: {err}</Text>
-          <Text>Press Enter to exit.</Text>
-          <InputLine onSubmit={() => process.exit(1)} />
-        </Box>
-      )}
-=======
       <RenderPhase
         filePath={filePath}
         numQuestions={numQuestions}
         quizFormat={format}
         phase={phase}
       />
->>>>>>> 3003dd78aec85fa5861d103a28dfb90e31d598d2
     </Box>
   );
 }
