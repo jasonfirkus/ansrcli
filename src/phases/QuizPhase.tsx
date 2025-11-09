@@ -18,12 +18,13 @@ const QuizPhase = ({
   numQuestions: number;
 }) => {
   const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
-  const response = JSON.parse(fs.readFileSync(quizPath, "utf8"));
-  const currentQuestion = response.questions[currentQuestionNum];
+  const quiz = JSON.parse(fs.readFileSync(quizPath, "utf8"));
+  console.log("🚀 ~ QuizPhase.tsx ~ QuizPhase ~ quiz: ", quiz);
+  const currentQuestion = quiz.questions[currentQuestionNum];
 
   function writeAnswer(answer: string) {
-    response.questions[currentQuestionNum].answer = answer;
-    fs.writeFileSync(quizPath, JSON.stringify(response));
+    quiz.questions[currentQuestionNum].answer = answer;
+    fs.writeFileSync(quizPath, JSON.stringify(quiz));
   }
 
   useInput((input, key) => {
@@ -54,7 +55,7 @@ const QuizPhase = ({
 
   return (
     <Box flexDirection="column">
-      <Text>{`Q${currentQuestionNum + 1} ${currentQuestion.content}`}</Text>
+      <Text>{`Q${currentQuestionNum + 1} ${currentQuestion?.content}`}</Text>
 
       {currentQuestion.type == "short" && (
         <ShortAnswerQuestion
