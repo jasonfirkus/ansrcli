@@ -6,6 +6,7 @@ import type QuestionType from "../types/question.js";
 import MultipleChoiceQuestion from "../components/Questions/MultipleChoiceQuestion.js";
 import TrueFalseQuestion from "../components/Questions/TrueFalseQuestion.js";
 import { Text, Box } from "ink";
+import { useInput } from "ink";
 
 const QuizPhase = ({
   quizPath,
@@ -21,9 +22,35 @@ const QuizPhase = ({
   const currentQuestion = response.questions[currentQuestionNum];
 
   function writeAnswer(answer: string) {
-    response[currentQuestionNum].answer = answer;
+    response.questions[currentQuestionNum].answer = answer;
     fs.writeFileSync(quizPath, JSON.stringify(response));
   }
+
+  useInput((input, key) => {
+    if (key.rightArrow) {
+      setCurrentQuestionNum(qNum => {
+        const nextQIndex = qNum + 1;
+
+        if (nextQIndex > numQuestions) return qNum;
+
+        return nextQIndex;
+      });
+
+      return;
+    }
+
+    if (key.leftArrow) {
+      setCurrentQuestionNum(qNum => {
+        const prevQIndex = qNum - 1;
+
+        if (prevQIndex < 0) return qNum;
+
+        return prevQIndex;
+      });
+
+      return;
+    }
+  });
 
   return (
     <Box flexDirection="column">

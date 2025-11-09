@@ -27,14 +27,14 @@ const MultipleChoiceQuestion = ({
   return (
     <SelectInput
       items={optionItems}
-      onSelect={(option) => {
+      onSelect={option => {
         writeAnswer(option.value);
 
         if (currentQNum + 1 > numQuestions) {
           setPhase("results");
         }
 
-        setCurrentQNum((qNum) => {
+        setCurrentQNum(qNum => {
           const nextQIndex = qNum + 1;
 
           if (nextQIndex > numQuestions) return qNum;

@@ -4,7 +4,7 @@ import QuizFormat from "../types/quiz-format.js";
 import Loading from "../components/Loading.js";
 import getMostRecentDownload from "../utils/get-most-recent-download.js";
 import type Phase from "../types/phase.js";
-import { generateQuizFromPdf } from "../aiClient.js";
+import { generateQuizFromPdf } from "../services/ai-client.service.js";
 import stamp from "../utils/stamp.js";
 import writeQuizJSON from "../utils/write-quiz-json.js";
 
@@ -21,8 +21,6 @@ const GenQuiz = ({
   setQuizPath: React.Dispatch<React.SetStateAction<string | null>>;
   setPhase: React.Dispatch<React.SetStateAction<Phase>>;
 }) => {
-  console.log("init");
-
   let path;
   if (!sourcePdfPath) {
     path = getMostRecentDownload();

@@ -3,12 +3,12 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { GoogleAIFileManager } from "@google/generative-ai/server";
 import path from "path";
 import "dotenv/config";
-import type { QuizFile, UserAnswer, GradeResult } from "./types/quizTypes.js";
-import buildQuizPrompt from "./prompts/build-quiz-prompt.js";
-import buildAnswerPrompt from "./prompts/build-answer-prompt.js";
-import type QuizFormat from "./types/quiz-format.js";
+import type { QuizFile, UserAnswer, GradeResult } from "../types/quizTypes.js";
+import buildQuizPrompt from "../prompts/build-quiz-prompt.js";
+import buildAnswerPrompt from "../prompts/build-answer-prompt.js";
+import type QuizFormat from "../types/quiz-format.js";
 
-const API_KEY = process.env["GOOGLE_API_KEY"];
+const API_KEY = process.env["ANSRCLI_GOOGLE_API_KEY"];
 
 if (!API_KEY) {
   throw new Error("Missing GOOGLE_API_KEY environment variable");

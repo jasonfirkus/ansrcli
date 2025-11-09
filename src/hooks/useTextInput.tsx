@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, useInput } from "ink";
 
-export default function InputLine({
+export default function useTextInput({
   prompt = ">",
   color = "green",
   numQuestions,
@@ -24,38 +24,19 @@ export default function InputLine({
 
   useInput((input, key) => {
     if (key.return) {
-      onSubmit?.(buffer);
+      onSubmit(buffer);
       setBuffer("");
+      setCurrentQuestionNum(qNum => {
+        const nextQIndex = qNum + 1;
+
+        if (nextQIndex > numQuestions) return qNum; //TODO change to setphase
+
+        return nextQIndex;
+      });
       return;
     }
     if (key.backspace) {
       setBuffer(prev => prev.slice(0, -1));
-      return;
-    }
-
-    if (key.leftArrow) {
-      setCurrentQuestionNum(qNum => {
-        const prevQIndex = qNum - 1;
-
-        if (prevQIndex < 0) return qNum;
-
-        return prevQIndex;
-      });
-      setBuffer("");
-
-      return;
-    }
-
-    if (key.rightArrow) {
-      setCurrentQuestionNum(qNum => {
-        const nextQIndex = qNum + 1;
-
-        if (nextQIndex > numQuestions) return qNum;
-
-        return nextQIndex;
-      });
-      setBuffer("");
-
       return;
     }
 
