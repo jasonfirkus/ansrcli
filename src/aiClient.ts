@@ -107,43 +107,62 @@ Do not include explanations, markdown, text or formatting outside the JSON.`,
  * Uses simple string comparison for grading.
  */
 export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<GradeResult> {
-  const items = answers.map((a) => {
-    const q = quiz.questions.find(q => q.id === a.id);
-    if (!q) {
-      return {
-        id: a.id,
-        correct: false,
-        feedback: "Question not found"
-      };
-    }
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+  const result = await model.generateContent([
+    {
+      text:
+      `You previously generated a quiz with the following questions and correct answers:
+      ${JSON.stringify(quiz, null, 2)}
+      The user provided the following answers:
+      ${JSON.stringify(answers, null, 2)}
+      Grade the user's answers. For short answer questions, be lenient with
+      spelling/capitalization and accept semantically equivalent answers.
+      Return ONLY valid JSON matching this TypeScript type:
+      {
+        "score": number,
+        "total": number,
+        "items": Array<{
+          "id": number,
+          "correct": boolean,
+          "expected"?: string,
+          "feedback"?: string
+        }>,
+        "summary"?: string
+      }
+      Rules:
+      - Mark true/false and multiple choice as correct only if they match exactly (case-insensitive).
+      - For short answers, be flexible and accept equivalent meanings.
+      - Provide brief feedback for incorrect answers.
+      - Include a summary with encouragement.
+      - If an answer is blank, assume the user failed to answer and mark it incorrect.
+      - Do not include explanations, markdown, text or formatting outside the JSON.`,
+    },
+  ]);
 
-    let correct = false;
-    const userValue = a.value.trim().toLowerCase();
+  const raw =
+    typeof result.response?.text === "function"
+      ? result.response.text()
+      : result.response?.text ?? null;
+
+  if (!raw) {
+    throw new Error("No response from model");
+  }
+
+  // Parse the JSON response
+  try {
+    // Remove markdown code fences and extra whitespace
+    const cleaned = raw
+      .trim()
+      .replace(/^```json\s*/i, "")
+      .replace(/^```\s*/i, "")
+      .replace(/```\s*$/i, "")
+      .trim();
     
-    if (q.type === "true_false") {
-      correct = userValue === String(q.answer).toLowerCase();
-    } else if (q.type === "multiple_choice") {
-      correct = userValue === q.answer?.toLowerCase();
-    } else if (q.type === "short_answer") {
-      correct = userValue === q.answer?.toLowerCase();
-    }
-
-    return {
-      id: a.id,
-      correct,
-      expected: String(q.answer),
-      feedback: correct ? "Correct!" : `Expected: ${q.answer}`
-    };
-  });
-
-  const score = items.filter(item => item.correct).length;
-
-  return {
-    score,
-    total: answers.length,
-    items,
-    summary: `You got ${score} out of ${answers.length} correct (${Math.round(score / answers.length * 100)}%).`
-  };
+    const parsed = typeof cleaned === "string" ? JSON.parse(cleaned) : cleaned;
+    return parsed as GradeResult;
+  } catch (parseErr) {
+    throw new Error(`Failed to parse grade result JSON: ${parseErr}`);
+  }
 }
 
 /**

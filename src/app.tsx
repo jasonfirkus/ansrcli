@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo, memo } from "react";
 import { Box, Text } from "ink";
 import Gradient from "ink-gradient";
 import BigText from "ink-big-text";
@@ -11,6 +11,42 @@ import InputLine from "./components/inputline2.js";
 import Spinner from "ink-spinner";
 
 type Phase = "idle" | "loading" | "gen" | "quiz" | "grading" | "done" | "error";
+
+const ResultsDisplay = memo(({ result, quiz, onExit }: { result: GradeResult; quiz: QuizFile; onExit: () => void }) => {
+	return (
+		<Box flexDirection="column" marginTop={1}>
+			<Text bold>
+				Score: {result.score} / {result.total} ({Math.round((result.score / result.total) * 100)}%)
+			</Text>
+			{result.summary && <Text color="cyan">{result.summary}</Text>}
+			
+			<Box flexDirection="column" marginTop={1}>
+				{result.items.map((item, idx) => {
+					const question = quiz.questions.find(q => q.id === item.id);
+					return (
+						<Box key={item.id} flexDirection="column" marginY={0}>
+							<Text>
+								{idx + 1}. {item.correct ? <Text color="green">✓</Text> : <Text color="red">✗</Text>} {question?.question}
+							</Text>
+							{!item.correct && item.expected && (
+								<Text dimColor>   Expected: {item.expected}</Text>
+							)}
+							{item.feedback && (
+								<Text dimColor>   {item.feedback}</Text>
+							)}
+						</Box>
+					);
+				})}
+			</Box>
+
+			<Box marginTop={1}>
+				<Text dimColor>Artifacts saved to ./.ansr</Text>
+			</Box>
+			<Text>Press Enter to exit.</Text>
+			<InputLine onSubmit={onExit} />
+		</Box>
+	);
+});
 
 export default function App({ filePath = "" }: { filePath?: string }) {
 	const [phase, setPhase] = useState<Phase>("idle");
@@ -61,7 +97,7 @@ export default function App({ filePath = "" }: { filePath?: string }) {
 		})();
 	}, [filePath]);
 
-	const onQuizComplete = async (answers: UserAnswer[]) => {
+	const onQuizComplete = useCallback(async (answers: UserAnswer[]) => {
 		try {
 			setPhase("grading");
 			const r = await gradeQuiz(quiz!, answers);
@@ -72,7 +108,15 @@ export default function App({ filePath = "" }: { filePath?: string }) {
 			setErr(e?.message ?? String(e));
 			setPhase("error");
 		}
-	};
+	}, [quiz]);
+
+	const handleExit = useCallback(() => {
+		process.exit(0);
+	}, []);
+
+	const handleExitWithError = useCallback(() => {
+		process.exit(1);
+	}, []);
 
 	return (
 		<Box flexDirection="column">
@@ -89,7 +133,7 @@ export default function App({ filePath = "" }: { filePath?: string }) {
 					<Text dimColor> ansr ./slides/sorting.pdf</Text>
 					<Text dimColor> ansr ./data/sorting_quiz.json</Text>
 					<Text>Press Enter to exit.</Text>
-					<InputLine onSubmit={() => process.exit(0)} />
+					<InputLine onSubmit={handleExit} />
 				</Box>
 			)}
 
@@ -105,23 +149,15 @@ export default function App({ filePath = "" }: { filePath?: string }) {
 			)}
 			{phase === "grading" && <Text>Grading your answers…</Text>}
 
-			{phase === "done" && result && (
-				<Box flexDirection="column" marginTop={1}>
-					<Text>
-						Score: {result.score} / {result.total}
-					</Text>
-					{result.summary && <Text>{result.summary}</Text>}
-					<Text dimColor>Artifacts saved to ./.ansr</Text>
-					<Text>Press Enter to exit.</Text>
-					<InputLine onSubmit={() => process.exit(0)} />
-				</Box>
+			{phase === "done" && result && quiz && (
+				<ResultsDisplay result={result} quiz={quiz} onExit={handleExit} />
 			)}
 
 			{phase === "error" && (
 				<Box flexDirection="column" marginTop={1}>
 					<Text color="red">Error: {err}</Text>
 					<Text>Press Enter to exit.</Text>
-					<InputLine onSubmit={() => process.exit(1)} />
+					<InputLine onSubmit={handleExitWithError} />
 				</Box>
 			)}
 		</Box>
