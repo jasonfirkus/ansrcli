@@ -46,7 +46,7 @@ export async function generateQuizFromPdf(
   // Poll until processing is complete
   let fileMeta = await fileManager.getFile(uploadResult.file.name);
   while (fileMeta.state === "PROCESSING") {
-    await new Promise(r => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 2000));
     fileMeta = await fileManager.getFile(uploadResult.file.name);
   }
 
@@ -98,7 +98,10 @@ export async function generateQuizFromPdf(
  * Grades a quiz by comparing user answers to expected answers.
  * Uses simple string comparison for grading.
  */
-export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<GradeResult> {
+export async function gradeQuiz(
+  quiz: QuizFile,
+  answers: UserAnswer[]
+): Promise<GradeResult> {
   const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
   const result = await model.generateContent([
     {
@@ -128,9 +131,9 @@ export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<
     const parsed = typeof cleaned === "string" ? JSON.parse(cleaned) : cleaned;
 
     // Build formatted output string
-    let responseBuilder = `Score: ${parsed.score} / ${parsed.total} (${Math.round(
-      (parsed.score / parsed.total) * 100
-    )}%)\n\n`;
+    let responseBuilder = `Score: ${parsed.score} / ${
+      parsed.total
+    } (${Math.round((parsed.score / parsed.total) * 100)}%)\n\n`;
 
     if (parsed.summary) {
       responseBuilder += `${parsed.summary}\n\n`;
@@ -138,7 +141,7 @@ export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<
 
     for (let i = 0; i < parsed.items.length; i++) {
       const item = parsed.items[i];
-      const question = quiz.questions.find(q => q.id === item.id);
+      const question = quiz.questions.find((q) => q.id === item.id);
       const checkmark = item.correct ? "✓" : "✗";
 
       responseBuilder += `${i + 1}. ${checkmark} ${question?.question}\n`;
@@ -177,6 +180,10 @@ export function ensureDataDir() {
 export function writeArtifact(name: string, data: any) {
   const dir = ensureDataDir();
   const p = path.join(dir, name);
-  fs.writeFileSync(p, typeof data === "string" ? data : JSON.stringify(data, null, 2), "utf8");
+  fs.writeFileSync(
+    p,
+    typeof data === "string" ? data : JSON.stringify(data, null, 2),
+    "utf8"
+  );
   return p;
 }

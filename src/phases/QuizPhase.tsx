@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import type Phase from "../types/phase.js";
 import fs from "fs";
 import ShortAnswerQuestion from "../components/Questions/ShortAnswerQuestion.js";
-import type QuestionType from "../types/question.js";
 import MultipleChoiceQuestion from "../components/Questions/MultipleChoiceQuestion.js";
 import TrueFalseQuestion from "../components/Questions/TrueFalseQuestion.js";
 import { Text, Box } from "ink";
@@ -19,7 +18,7 @@ const QuizPhase = ({
 }) => {
   const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
   const response = JSON.parse(fs.readFileSync(quizPath, "utf8"));
-  const prevAnswer = response.questions[currentQuestionNum].answer ?? "";
+  const prevAnswer = response.questions[currentQuestionNum]?.answer ?? "";
   const currentQuestion = response.questions[currentQuestionNum];
 
   function writeAnswer(answer: string) {
@@ -62,6 +61,8 @@ const QuizPhase = ({
           numQuestions={numQuestions}
           writeAnswer={writeAnswer}
           userAnswer={prevAnswer}
+          setPhase={setPhase}
+          currentQNum={currentQuestionNum}
         />
       )}
       {currentQuestion.type == "mc" && (

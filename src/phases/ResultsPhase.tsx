@@ -1,5 +1,6 @@
 import { Text } from "ink";
 import React from "react";
+import type Phase from "../types/phase.js";
 
 const ResultsPhase = ({
   sourcePdfPath,
@@ -8,9 +9,9 @@ const ResultsPhase = ({
 }: {
   sourcePdfPath?: string;
   numQuestions: number;
-  setPhase: React.Dispatch<React.SetStateAction<string>>;
+  setPhase: React.Dispatch<React.SetStateAction<Phase>>;
 }) => {
-  return <Text></Text>;
+  return <Text>GOT TO RESULTS, YIPPE</Text>;
 };
 
 export default ResultsPhase;

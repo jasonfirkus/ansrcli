@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Text, useInput } from "ink";
+import Phase from "../types/phase.js";
 
 export default function TextInput({
   prompt = ">",
@@ -8,13 +9,17 @@ export default function TextInput({
   setCurrentQuestionNum,
   onSubmit,
   userAnswer = "",
+  currentQNum,
+  setPhase,
 }: {
   prompt?: string;
   color?: string;
   numQuestions: number;
   setCurrentQuestionNum: React.Dispatch<React.SetStateAction<number>>;
+  setPhase: React.Dispatch<React.SetStateAction<Phase>>;
   onSubmit: (value: string) => void;
   userAnswer?: string;
+  currentQNum: number;
 }) {
   const [buffer, setBuffer] = useState(userAnswer);
   const [cursorVisible, setCursorVisible] = useState(true);
@@ -28,14 +33,11 @@ export default function TextInput({
     if (key.return) {
       onSubmit(buffer);
       setBuffer("");
-      setCurrentQuestionNum((qNum) => {
-        const nextQIndex = qNum + 1;
-
-        if (nextQIndex > numQuestions) return qNum; //TODO change to setphase
-
-        return nextQIndex;
-      });
-      return;
+      if (currentQNum + 1 >= numQuestions) {
+        setPhase("results");
+        return;
+      }
+      setCurrentQuestionNum((prev) => prev + 1);
     }
     if (key.backspace) {
       setBuffer((prev) => prev.slice(0, -1));
