@@ -8,6 +8,7 @@ import type { QuizFile, UserAnswer, GradeResult } from "./types/quizTypes.js";
 import { generateQuizFromPdf, gradeQuiz, writeArtifact } from "./aiClient.js";
 import RenderPhase from "./RenderPhase.js";
 import QuizFormat from "./types/quiz-format.js";
+import type Phase from "./types/phase.js";
 
 export default function App({
   filePath = "%USERPROFILE%\\Downloads",
@@ -18,7 +19,7 @@ export default function App({
   numQuestions?: number;
   format?: QuizFormat;
 }) {
-  const [phase, setPhase] = useState<Phase>("idle");
+  const [phase, setPhase] = useState<Phase>("gen-quiz");
   const [quiz, setQuiz] = useState<QuizFile | null>(null);
   const [result, setResult] = useState<GradeResult | null>(null);
   const [err, setErr] = useState<string | null>(null);
