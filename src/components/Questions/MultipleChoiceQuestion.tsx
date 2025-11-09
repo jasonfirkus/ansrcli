@@ -1,6 +1,7 @@
 import React from "react";
 import SelectInput from "ink-select-input";
 import Phase from "../../types/phase.js";
+import Question from "../../types/question.js";
 
 const MultipleChoiceQuestion = ({
   setCurrentQNum,
@@ -9,6 +10,7 @@ const MultipleChoiceQuestion = ({
   options,
   currentQNum,
   numQuestions,
+  currentQuestion,
 }: {
   currentQNum: number;
   setCurrentQNum: React.Dispatch<React.SetStateAction<number>>;
@@ -16,6 +18,7 @@ const MultipleChoiceQuestion = ({
   options: string[];
   setPhase: React.Dispatch<React.SetStateAction<Phase>>;
   numQuestions: number;
+  currentQuestion: Question;
 }) => {
   const optionItems = [
     { label: "A) " + options[0], value: "A" },
@@ -26,6 +29,7 @@ const MultipleChoiceQuestion = ({
 
   return (
     <SelectInput
+      initialIndex={currentQuestion?.answer ? 0 }
       items={optionItems}
       onSelect={option => {
         writeAnswer(option.value);

@@ -61,6 +61,7 @@ const QuizPhase = ({
           setCurrentQNum={setCurrentQuestionNum}
           numQuestions={numQuestions}
           writeAnswer={writeAnswer}
+          currentQuestion={currentQuestion}
         />
       )}
 
@@ -72,6 +73,7 @@ const QuizPhase = ({
           writeAnswer={writeAnswer}
           setPhase={setPhase}
           currentQNum={currentQuestionNum}
+          currentQuestion={currentQuestion}
         />
       )}
 
@@ -82,6 +84,7 @@ const QuizPhase = ({
           writeAnswer={writeAnswer}
           setPhase={setPhase}
           currentQNum={currentQuestionNum}
+          currentQuestion={currentQuestion}
         />
       )}
     </Box>
