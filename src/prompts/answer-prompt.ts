@@ -5,7 +5,6 @@ const ANSWER_PROMPT = `
 
     [
       {
-        "content": string,
         "correct": boolean,
         "expected": string,
         "feedback"?: string

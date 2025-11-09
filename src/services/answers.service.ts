@@ -6,8 +6,7 @@ import fs from "fs";
 import cleanMarkdown from "../utils/clean-markdown.js";
 
 export default async function gradeQuiz(quizPath: string) {
-
-  const quizContent = fs.readFileSync(quizPath, "utf-8")
+  const quizContent = fs.readFileSync(quizPath, "utf-8");
 
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",

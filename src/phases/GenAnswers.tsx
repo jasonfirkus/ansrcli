@@ -13,11 +13,25 @@ const GenAnswers = ({
   setPhase: React.Dispatch<React.SetStateAction<Phase>>;
 }) => {
   (async () => {
-    // call gradequiz
-    // setPhase to results
     console.log("🚀 ~ GenAnswers.tsx ~ GenAnswers ~ quizPath: ", quizPath);
-    const gradedQuiz = await gradeQuiz(quizPath);
-    console.log("🚀 ~ GenAnswers.tsx ~ GenAnswers ~ gradedQuiz: ", gradedQuiz);
+    
+    const gradingResults = await gradeQuiz(quizPath);
+
+    const quizContent = fs.readFileSync(quizPath, "utf-8");
+    const quiz = JSON.parse(quizContent);
+
+    const gradedQuiz = {
+      ...quiz,
+      questions: quiz.questions.map((question: any, index: number) => ({
+        ...question,
+        grading: gradingResults[index],
+      })),
+    };
+    
+    fs.writeFileSync(quizPath, JSON.stringify(gradedQuiz));
+        console.log("🚀 ~ GenAnswers.tsx ~ GenAnswers ~ gradingResults: ", JSON.stringify(gradedQuiz));
+    
+    // setPhase("results");
   })();
 
   return <Loading message="Generating answers..." />;
