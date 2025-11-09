@@ -44,7 +44,8 @@ export default function App({
           setPhase("loading");
           const raw = fs.readFileSync(abs, "utf8");
           const parsed = JSON.parse(raw) as QuizFile;
-          if (!parsed?.questions?.length) throw new Error("Quiz JSON has no questions.");
+          if (!parsed?.questions?.length)
+            throw new Error("Quiz JSON has no questions.");
           setQuiz(parsed);
           setPhase("quiz");
           return;
@@ -89,7 +90,9 @@ export default function App({
 
       {phase === "idle" && (
         <Box marginTop={1} flexDirection="column">
-          <Text>Provide a PDF to generate a quiz, or a quiz JSON to run it.</Text>
+          <Text>
+            Provide a PDF to generate a quiz, or a quiz JSON to run it.
+          </Text>
           <Text dimColor>Examples:</Text>
           <Text dimColor> ansr ./slides/sorting.pdf</Text>
           <Text dimColor> ansr ./data/sorting_quiz.json</Text>
@@ -99,13 +102,17 @@ export default function App({
       )}
 
       {phase === "loading" && <Text>Loading quiz JSON…</Text>}
+
       {phase === "gen" && (
         <Text>
           {" "}
           <Spinner type="dots" /> Generating quiz from PDF…
         </Text>
       )}
-      {phase === "quiz" && quiz && <QuizRunner quiz={quiz} onComplete={onQuizComplete} />}
+
+      {phase === "quiz" && quiz && (
+        <QuizRunner quiz={quiz} onComplete={onQuizComplete} />
+      )}
       {phase === "grading" && <Text>Grading your answers…</Text>}
 
       {phase === "done" && result && (
