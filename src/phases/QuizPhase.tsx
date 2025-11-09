@@ -18,6 +18,11 @@ const QuizPhase = ({
   const questions = JSON.parse(fs.readFileSync(quizPath, "utf8"));
   const currentQuestion = questions[currentQuestionNum];
 
+  function writeAnswer(answer: string) {
+    questions[currentQuestionNum].answer = answer;
+    fs.writeFileSync(quizPath, JSON.stringify(questions));
+  }
+
   return (
     <Box flexDirection="column">
       <Text>{`Q${currentQuestionNum} ${currentQuestion.content}`}</Text>
@@ -25,6 +30,7 @@ const QuizPhase = ({
         <ShortAnswerQuestion
           data={currentQuestion as QuestionType}
           setCurrentQNum={setCurrentQuestionNum}
+          onSubmit={writeAnswer}
         />
       )}
       {currentQuestion.type == "mc" && (

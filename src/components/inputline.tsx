@@ -14,7 +14,7 @@ export default function InputLine({
   color?: string;
   numQuestions: number;
   index: number;
-  setCurrentQuestionNum: (index: number) => void;
+  setCurrentQuestionNum: React.Dispatch<React.SetStateAction<number>>;
   onSubmit?: (value: string) => void;
   onExit?: () => void;
 }) {
@@ -38,18 +38,28 @@ export default function InputLine({
     }
 
     if (key.leftArrow) {
-      const prevQIndex = index - 1;
-      if (prevQIndex < 0) return;
-      setCurrentQuestionNum(prevQIndex);
+      setCurrentQuestionNum(qNum => {
+        const prevQIndex = qNum - 1;
+
+        if (prevQIndex < 0) return qNum;
+
+        return prevQIndex;
+      });
       setBuffer("");
+
       return;
     }
 
     if (key.rightArrow) {
-      const nextQIndex = index + 1;
-      if (nextQIndex > numQuestions) return;
-      setCurrentQuestionNum(nextQIndex);
+      setCurrentQuestionNum(qNum => {
+        const nextQIndex = qNum + 1;
+
+        if (nextQIndex > numQuestions) return qNum;
+
+        return nextQIndex;
+      });
       setBuffer("");
+
       return;
     }
 
