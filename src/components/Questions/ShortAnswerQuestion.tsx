@@ -7,12 +7,20 @@ const ShortAnswerQuestion = ({
   data,
   setCurrentQNum,
   writeAnswer,
+  numQuestions,
 }: {
   data: Question;
   setCurrentQNum: React.Dispatch<React.SetStateAction<number>>;
   writeAnswer: (answer: string) => void;
+  numQuestions: number;
 }) => {
-  return <InputLine onSubmit={raw => writeAnswer(raw)} />;
+  return (
+    <InputLine
+      setCurrentQuestionNum={setCurrentQNum}
+      onSubmit={raw => writeAnswer(raw)}
+      numQuestions={numQuestions}
+    />
+  );
 };
 
 export default ShortAnswerQuestion;

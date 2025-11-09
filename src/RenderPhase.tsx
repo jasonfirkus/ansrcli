@@ -38,7 +38,7 @@ const RenderPhase = ({
   if (phase == "quiz") {
     return (
       <ErrorBoundary fallback={<ErrorPhase />}>
-        <QuizPhase quizPath={quizPath as string} setPhase={setPhase} />
+        <QuizPhase quizPath={quizPath as string} setPhase={setPhase} numQuestions={numQuestions} />
       </ErrorBoundary>
     );
   }

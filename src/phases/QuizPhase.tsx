@@ -10,9 +10,11 @@ import { Text, Box } from "ink";
 const QuizPhase = ({
   quizPath,
   setPhase,
+  numQuestions,
 }: {
   quizPath: string;
   setPhase: React.Dispatch<React.SetStateAction<Phase>>;
+  numQuestions: number;
 }) => {
   const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
   const questions = JSON.parse(fs.readFileSync(quizPath, "utf8"));
@@ -30,6 +32,7 @@ const QuizPhase = ({
         <ShortAnswerQuestion
           data={currentQuestion as QuestionType}
           setCurrentQNum={setCurrentQuestionNum}
+          numQuestions={numQuestions}
           onSubmit={writeAnswer}
         />
       )}
@@ -37,12 +40,14 @@ const QuizPhase = ({
         <MultipleChoiceQuestion
           data={currentQuestion as QuestionType}
           setCurrentQNum={setCurrentQuestionNum}
+          numQuestions={numQuestions}
         />
       )}
       {currentQuestion.type == "tf" && (
         <TrueFalseQuestion
           data={currentQuestion as QuestionType}
           setCurrentQNum={setCurrentQuestionNum}
+          numQuestions={numQuestions}
         />
       )}
     </Box>

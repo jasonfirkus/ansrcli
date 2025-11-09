@@ -60,7 +60,6 @@ export default function InputLine({
     }
 
     if (key.ctrl && input.toLowerCase() === "q") {
-      onExit?.();
       process.exit(0);
       return;
     }
