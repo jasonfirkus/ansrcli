@@ -27,5 +27,5 @@ export interface GradeResult {
   score: number;           // e.g., 17
   total: number;           // e.g., 20
   items: GradeItem[];
-  summary?: string;        // 2–3 lines
+  output?: string;        // output to console
 }

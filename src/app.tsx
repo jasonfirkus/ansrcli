@@ -118,11 +118,10 @@ export default function App({
       {phase === "done" && result && (
         <Box flexDirection="column" marginTop={1}>
           <Text>
-            Score: {result.score} / {result.total}
+          {result.output ?? `Score: ${result.score} / ${result.total}`}
           </Text>
-          {result.summary && <Text>{result.summary}</Text>}
-          <Text dimColor>Artifacts saved to ./.ansr</Text>
-          <Text>Press Enter to exit.</Text>
+          {/* <Text dimColor>Artifacts saved to ./.ansr</Text> */}
+          {/* <Text>Press Enter to exit.</Text> */}
           <InputLine onSubmit={() => process.exit(0)} />
         </Box>
       )}
