@@ -5,6 +5,7 @@ import path from "path";
 import "dotenv/config";
 import type { QuizFile, UserAnswer, GradeResult } from "./types/quizTypes.js";
 import buildQuizPrompt from "./prompts/build-quiz-prompt.js";
+import buildAnswerPrompt from "./prompts/build-answer-prompt.js";
 
 const API_KEY = process.env["GOOGLE_API_KEY"];
 
@@ -61,7 +62,7 @@ export async function generateQuizFromPdf(localPath: string): Promise<QuizFile> 
       : result.response?.text ?? null;
 
   // Clean up remote file
-  await fileManager.deleteFile(uploadResult.file.name).catch(() => {});
+  await fileManager.deleteFile(uploadResult.file.name).catch(() => { });
 
   if (!raw) {
     throw new Error("No response from model");
@@ -89,45 +90,37 @@ export async function generateQuizFromPdf(localPath: string): Promise<QuizFile> 
  * Uses simple string comparison for grading.
  */
 export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<GradeResult> {
-  const items = answers.map(a => {
-    const q = quiz.questions.find(q => q.id === a.id);
-    if (!q) {
-      return {
-        id: a.id,
-        correct: false,
-        feedback: "Question not found",
-      };
-    }
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+  const result = await model.generateContent([
+    {
+      text: buildAnswerPrompt(quiz, answers),
+    },
+  ]);
 
-    let correct = false;
-    const userValue = a.value.trim().toLowerCase();
+  const raw =
+    typeof result.response?.text === "function"
+      ? result.response.text()
+      : result.response?.text ?? null;
 
-    if (q.type === "true_false") {
-      correct = userValue === String(q.answer).toLowerCase();
-    } else if (q.type === "multiple_choice") {
-      correct = userValue === q.answer?.toLowerCase();
-    } else if (q.type === "short_answer") {
-      correct = userValue === q.answer?.toLowerCase();
-    }
+  if (!raw) {
+    throw new Error("No response from model");
+  }
 
-    return {
-      id: a.id,
-      correct,
-      expected: String(q.answer),
-      feedback: correct ? "Correct!" : `Expected: ${q.answer}`,
-    };
-  });
+  // Parse the JSON response
+  try {
+    // Remove markdown code fences and extra whitespace
+    const cleaned = raw
+      .trim()
+      .replace(/^```json\s*/i, "")
+      .replace(/^```\s*/i, "")
+      .replace(/```\s*$/i, "")
+      .trim();
 
-  const score = items.filter(item => item.correct).length;
-
-  return {
-    score,
-    total: answers.length,
-    items,
-    summary: `You got ${score} out of ${answers.length} correct (${Math.round(
-      (score / answers.length) * 100
-    )}%).`,
-  };
+    const parsed = typeof cleaned === "string" ? JSON.parse(cleaned) : cleaned;
+    return parsed as GradeResult;
+  } catch (parseErr) {
+    throw new Error(`Failed to parse grade result JSON: ${parseErr}`);
+  }
 }
 
 /**
