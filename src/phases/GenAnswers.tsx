@@ -31,7 +31,7 @@ const GenAnswers = ({
     fs.writeFileSync(quizPath, JSON.stringify(gradedQuiz));
         console.log("🚀 ~ GenAnswers.tsx ~ GenAnswers ~ gradingResults: ", JSON.stringify(gradedQuiz));
     
-    // setPhase("results");
+    setPhase("results");
   })();
 
   return <Loading message="Generating answers..." />;

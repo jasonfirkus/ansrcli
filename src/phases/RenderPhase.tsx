@@ -39,11 +39,11 @@ const RenderPhase = ({
 
       {phase == "gen-answers" && <GenAnswers quizPath={quizPath as string} setPhase={setPhase} />}
 
-      {phase == "quiz" && (
+      {phase == "results" && (
         <ResultsPhase
-          sourcePdfPath={sourcePdfPath}
-          numQuestions={numQuestions}
+          quizPath={quizPath as string}
           setPhase={setPhase}
+          numQuestions={numQuestions}
         />
       )}
     </ErrorBoundary>
