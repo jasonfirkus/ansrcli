@@ -26,7 +26,6 @@ const GenAnswers = ({
     };
 
     fs.writeFileSync(quizPath, JSON.stringify(gradedQuiz));
-
     setPhase("results");
   })();
 

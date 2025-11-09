@@ -44,7 +44,7 @@ const RenderPhase = ({
         <GenAnswers quizPath={quizPath as string} setPhase={setPhase} />
       )}
 
-      {phase == "results" && <ResultsPhase quizPath={quizPath as string} />}
+      {phase == "results" && <ResultsPhase quizPath={quizPath as string} numQuestions={numQuestions} />}
     </ErrorBoundary>
   );
 };

@@ -1,87 +1,84 @@
-import React from "react";
-import { Box, Text } from "ink";
-import fs from "fs/promises";
-import path from "path";
+import { Text } from "ink";
+import React, { useState, useEffect } from "react";
+import Phase from "../types/phase.js";
+import fs from "fs";
+import { useInput, Box } from "ink";
+import Answer from "../components/Answer.js";
 
-type Grading = {
-  correctAnswer?: string;
-  correct?: boolean;
-  feedback?: string;
-  score?: number;
-};
+const ResultsPhase = ({
+  quizPath,
+  numQuestions,
+}: {
+  quizPath: string;
+  numQuestions: number;
+}) => {
+  const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
+  const [cursorVisible, setCursorVisible] = useState(true);
 
-type Question = {
-  type: "mc" | "short" | "tf";
-  content: string;
-  options?: string[];
-  answer: string;
-  grading: Grading;
-};
+  const quiz = JSON.parse(fs.readFileSync(quizPath, "utf8"));
 
-type Quiz = {
-  title: string;
-  questions: Question[];
-};
+  useEffect(() => {
+    const t = setInterval(() => setCursorVisible(v => !v), 500);
+    return () => clearInterval(t);
+  }, []);
 
-export default function ResultsPhase({ quizPath }: { quizPath: string }) {
-  const [quiz, setQuiz] = React.useState<Quiz | null>(null);
-  const [err, setErr] = React.useState<string | null>(null);
+  useInput((input, key) => {
+    if (key.rightArrow) {
+      setCurrentQuestionNum(qNum => {
+        const nextQIndex = qNum + 1;
 
-  React.useEffect(() => {
-    (async () => {
-      try {
-        const resolved = path.resolve(quizPath);
-        const content = await fs.readFile(resolved, "utf8");
-        const data = JSON.parse(content) as Quiz;
-        setQuiz(data);
-      } catch (e) {
-        setErr(e instanceof Error ? e.message : String(e));
-      }
-    })();
-  }, [quizPath]);
+        if (nextQIndex > numQuestions - 1) return qNum;
 
-  if (err) return <Text color="red">Error loading quiz: {err}</Text>;
-  if (!quiz) return <Text dimColor>Loading quiz...</Text>;
+        return nextQIndex;
+      });
+
+      return;
+    }
+
+    if (key.leftArrow) {
+      setCurrentQuestionNum(qNum => {
+        const prevQIndex = qNum - 1;
+
+        if (prevQIndex < 0) return qNum;
+
+        return prevQIndex;
+      });
+
+      return;
+    }
+
+    if (key.return || (key.ctrl && input == 'q')) {
+      process.exit(0);
+      return;
+    }
+  });
 
   return (
-    <Box flexDirection="column">
-      <Text>📘 {quiz.title}</Text>
 
-      {quiz.questions.map((q, i) => {
-        const { grading } = q;
-        const emoji =
-          grading?.correct === true
-            ? "✅"
-            : grading?.correct === false
-            ? "❌"
-            : "•";
+    <>
+      <Answer
+        currentQuestion={quiz.questions[currentQuestionNum]}
+      />
+      
+      <Text color={"green"}>
+        {cursorVisible ? <Text inverse> </Text> : " "}
+      </Text>
 
-        return (
-          <Box key={i} flexDirection="column" marginTop={1}>
-            <Text>
-              {i + 1}. ({q.type}) {q.content}
-            </Text>
-            <Text>
-              Your answer: <Text color="cyan">{q.answer || "<empty>"}</Text>{" "}
-              {emoji}
-            </Text>
+      <Box borderStyle="round" paddingX={1} gap={3}>
+        <Text>
+          ← <Text dimColor>previous</Text>
+        </Text>
 
-            {grading && (
-              <Box flexDirection="column" marginLeft={2}>
-                {grading.correctAnswer && (
-                  <Text dimColor>Correct: {grading.correctAnswer}</Text>
-                )}
-                {grading.feedback && (
-                  <Text dimColor>💬 {grading.feedback}</Text>
-                )}
-                {typeof grading.score === "number" && (
-                  <Text dimColor>🏅 Score: {grading.score}</Text>
-                )}
-              </Box>
-            )}
-          </Box>
-        );
-      })}
-    </Box>
-  );
-}
+        <Text>
+          → <Text dimColor>next</Text>
+        </Text>
+        <Text>
+          Enter / Ctrl+Q / Ctrl+C <Text dimColor>exit program</Text>
+        </Text>
+      </Box>
+    </>
+
+  )
+};
+
+export default ResultsPhase;
