@@ -6,7 +6,7 @@ export default function InputLine({
   color = "green",
   numQuestions,
   index,
-  setIndex,
+  setCurrentQuestionNum,
   onSubmit,
   onExit,
 }: {
@@ -14,7 +14,7 @@ export default function InputLine({
   color?: string;
   numQuestions: number;
   index: number;
-  setIndex: (index: number) => void;
+  setCurrentQuestionNum: (index: number) => void;
   onSubmit?: (value: string) => void;
   onExit?: () => void;
 }) {
@@ -22,7 +22,7 @@ export default function InputLine({
   const [cursorVisible, setCursorVisible] = useState(true);
 
   useEffect(() => {
-    const t = setInterval(() => setCursorVisible((v) => !v), 500);
+    const t = setInterval(() => setCursorVisible(v => !v), 500);
     return () => clearInterval(t);
   }, []);
 
@@ -33,14 +33,14 @@ export default function InputLine({
       return;
     }
     if (key.backspace) {
-      setBuffer((prev) => prev.slice(0, -1));
+      setBuffer(prev => prev.slice(0, -1));
       return;
     }
 
     if (key.leftArrow) {
       const prevQIndex = index - 1;
       if (prevQIndex < 0) return;
-      setIndex(prevQIndex);
+      setCurrentQuestionNum(prevQIndex);
       setBuffer("");
       return;
     }
@@ -48,7 +48,7 @@ export default function InputLine({
     if (key.rightArrow) {
       const nextQIndex = index + 1;
       if (nextQIndex > numQuestions) return;
-      setIndex(nextQIndex);
+      setCurrentQuestionNum(nextQIndex);
       setBuffer("");
       return;
     }
@@ -58,7 +58,7 @@ export default function InputLine({
       process.exit(0);
       return;
     }
-    if (input) setBuffer((prev) => prev + input);
+    if (input) setBuffer(prev => prev + input);
   });
 
   return (

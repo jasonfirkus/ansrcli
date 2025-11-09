@@ -6,6 +6,7 @@ import "dotenv/config";
 import type { QuizFile, UserAnswer, GradeResult } from "./types/quizTypes.js";
 import buildQuizPrompt from "./prompts/build-quiz-prompt.js";
 import buildAnswerPrompt from "./prompts/build-answer-prompt.js";
+import type QuizFormat from "./types/quiz-format.js";
 
 const API_KEY = process.env["GOOGLE_API_KEY"];
 
@@ -20,16 +21,24 @@ const fileManager = new GoogleAIFileManager(API_KEY);
  * Uploads a PDF file to Google AI File Manager, generates a quiz from it,
  * and returns the parsed quiz JSON.
  */
-export async function generateQuizFromPdf(localPath: string): Promise<QuizFile> {
-  if (!fs.existsSync(localPath)) {
-    throw new Error(`File not found: ${localPath}`);
+export async function generateQuizFromPdf(
+  sourcePdfPath: string,
+  numQuestions = 10,
+  quizFormat = "mc,short,tf" as QuizFormat
+): Promise<{
+  sourcePdfPath: string;
+  numQuestions: number;
+  quizFormat: QuizFormat;
+}> {
+  if (!fs.existsSync(sourcePdfPath)) {
+    throw new Error(`File not found: ${sourcePdfPath}`);
   }
 
   const mimeType = "application/pdf";
-  const displayName = path.basename(localPath);
+  const displayName = path.basename(sourcePdfPath);
 
   // Upload file to Google AI file manager
-  const uploadResult = await fileManager.uploadFile(localPath, {
+  const uploadResult = await fileManager.uploadFile(sourcePdfPath, {
     mimeType,
     displayName,
   });
@@ -53,7 +62,7 @@ export async function generateQuizFromPdf(localPath: string): Promise<QuizFile> 
         fileUri: uploadResult.file.uri,
       },
     },
-    { text: buildQuizPrompt({ numQuestions: 10, format: "mc,short,tf" }) },
+    { text: buildQuizPrompt(numQuestions, quizFormat) },
   ]);
 
   const raw =
@@ -62,7 +71,7 @@ export async function generateQuizFromPdf(localPath: string): Promise<QuizFile> 
       : result.response?.text ?? null;
 
   // Clean up remote file
-  await fileManager.deleteFile(uploadResult.file.name).catch(() => { });
+  await fileManager.deleteFile(uploadResult.file.name).catch(() => {});
 
   if (!raw) {
     throw new Error("No response from model");
@@ -79,7 +88,7 @@ export async function generateQuizFromPdf(localPath: string): Promise<QuizFile> 
       .trim();
 
     const parsed = typeof cleaned === "string" ? JSON.parse(cleaned) : cleaned;
-    return parsed as QuizFile;
+    return parsed;
   } catch (parseErr) {
     throw new Error(`Failed to parse quiz JSON: ${parseErr}`);
   }
@@ -119,8 +128,10 @@ export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<
     const parsed = typeof cleaned === "string" ? JSON.parse(cleaned) : cleaned;
 
     // Build formatted output string
-    let responseBuilder = `Score: ${parsed.score} / ${parsed.total} (${Math.round((parsed.score / parsed.total) * 100)}%)\n\n`;
-    
+    let responseBuilder = `Score: ${parsed.score} / ${parsed.total} (${Math.round(
+      (parsed.score / parsed.total) * 100
+    )}%)\n\n`;
+
     if (parsed.summary) {
       responseBuilder += `${parsed.summary}\n\n`;
     }
@@ -129,9 +140,9 @@ export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<
       const item = parsed.items[i];
       const question = quiz.questions.find(q => q.id === item.id);
       const checkmark = item.correct ? "✓" : "✗";
-      
+
       responseBuilder += `${i + 1}. ${checkmark} ${question?.question}\n`;
-      
+
       if (!item.correct) {
         if (item.expected) {
           responseBuilder += `   Expected: ${item.expected}\n`;

@@ -9,38 +9,57 @@ import QuizFormat from "./types/quiz-format.js";
 import { ErrorBoundary } from "react-error-boundary";
 import type Phase from "./types/phase.js";
 
-// Per-phase parameter types
-type PhaseParams = {
-  "gen-quiz": { filePath?: string; numQuestions: number; quizFormat: QuizFormat };
-  "gen-answers": {}; // no params now, expand later if needed
-  quiz: {};
-  results: {};
-  error: {};
-};
-
-// Registry: every entry is a function returning JSX
-const RENDER_PHASE: { [K in Phase]: (p: PhaseParams[K]) => JSX.Element } = {
-  "gen-quiz": ({ filePath, numQuestions, quizFormat }) => (
-    <GenQuiz filePath={filePath} numQuestions={numQuestions} quizFormat={quizFormat} />
-  ),
-  quiz: () => <QuizPhase />,
-  "gen-answers": () => <GenAnswers />,
-  results: () => <ResultsPhase />,
-  error: () => <ErrorPhase />,
-};
-
-// Props are a discriminated union keyed by phase
-type RenderProps =
-  | ({ phase: "gen-quiz" } & PhaseParams["gen-quiz"])
-  | ({ phase: "gen-answers" } & PhaseParams["gen-answers"])
-  | ({ phase: "quiz" } & PhaseParams["quiz"])
-  | ({ phase: "results" } & PhaseParams["results"])
-  | ({ phase: "error" } & PhaseParams["error"]);
-
-const RenderPhase = (props: RenderProps) => {
+const RenderPhase = ({
+  sourcePdfPath,
+  numQuestions,
+  quizFormat,
+}: {
+  sourcePdfPath?: string;
+  numQuestions: number;
+  quizFormat: QuizFormat;
+}) => {
   const [phase, setPhase] = useState<Phase>("gen-quiz");
+  const [quizPath, setQuizPath] = useState<string | null>(null);
 
-  return <ErrorBoundary>RENDER_PHASE[phase](props as any)</ErrorBoundary>;
+  if (phase == "gen-quiz") {
+    return (
+      <ErrorBoundary fallback={<ErrorPhase />}>
+        <GenQuiz
+          sourcePdfPath={sourcePdfPath}
+          numQuestions={numQuestions}
+          quizFormat={quizFormat}
+          setQuizPath={setQuizPath}
+          setPhase={setPhase}
+        />
+      </ErrorBoundary>
+    );
+  }
+
+  if (phase == "quiz") {
+    return (
+      <ErrorBoundary fallback={<ErrorPhase />}>
+        <QuizPhase quizPath={quizPath as string} setPhase={setPhase} />
+      </ErrorBoundary>
+    );
+  }
+
+  if (phase == "gen-answers") {
+    return (
+      <ErrorBoundary fallback={<ErrorPhase />}>
+        <GenAnswers quizPath={quizPath as string} setPhase={setPhase} />
+      </ErrorBoundary>
+    );
+  }
+
+  if (phase == "results") {
+    return (
+      <ErrorBoundary fallback={<ErrorPhase />}>
+        <ResultsPhase />
+      </ErrorBoundary>
+    );
+  }
+
+  return <ErrorPhase />;
 };
 
 export default RenderPhase;

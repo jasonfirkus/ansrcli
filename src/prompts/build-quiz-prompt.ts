@@ -10,13 +10,7 @@ const FORMAT_MAP: FormatMap = {
   short: "short answer",
 };
 
-export default function buildQuizPrompt({
-  numQuestions,
-  format,
-}: {
-  numQuestions: number;
-  format: QuizFormat;
-}) {
+export default function buildQuizPrompt(numQuestions: number, format: QuizFormat) {
   const quizFormat = format
     .split(",")
     .map(f => FORMAT_MAP[f])

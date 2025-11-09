@@ -11,11 +11,11 @@ import QuizFormat from "./types/quiz-format.js";
 import type Phase from "./types/phase.js";
 
 export default function App({
-  filePath = "%USERPROFILE%\\Downloads",
+  sourcePdfPath,
   numQuestions = 10,
   format = "mc,short,tf",
 }: {
-  filePath?: string;
+  sourcePdfPath?: string;
   numQuestions?: number;
   format?: QuizFormat;
 }) {
@@ -25,9 +25,9 @@ export default function App({
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!filePath) return;
+    if (!sourcePdfPath) return;
 
-    const abs = path.resolve(process.cwd(), filePath);
+    const abs = path.resolve(process.cwd(), sourcePdfPath);
     const lower = abs.toLowerCase();
 
     (async () => {
@@ -64,7 +64,7 @@ export default function App({
         setErr(e?.message ?? String(e));
       }
     })();
-  }, [filePath]);
+  }, [sourcePdfPath]);
 
   const onQuizComplete = async (answers: UserAnswer[]) => {
     try {
@@ -85,16 +85,7 @@ export default function App({
         <BigText text="ansr" font="block" letterSpacing={3} />
       </Gradient>
 
-      <RenderPhase
-        filePath={filePath}
-        numQuestions={numQuestions}
-        quizFormat={format}
-        phase={phase}
-      />
+      <RenderPhase sourcePdfPath={sourcePdfPath} numQuestions={numQuestions} quizFormat={format} />
     </Box>
   );
-}
-
-function stamp() {
-  return new Date().toISOString().replace(/[:.]/g, "-");
 }

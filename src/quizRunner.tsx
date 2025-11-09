@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
 import { Box, Text } from "ink";
-import InputLine from "./components/inputline2.js";
+import InputLine from "./components/inputline.js";
 import type { QuizFile, Question, UserAnswer } from "./types/quizTypes.js";
 
 /** Utility helpers */
