@@ -16,6 +16,8 @@ const ANSWER_PROMPT = `
     - Mark true/false and multiple choice as correct only if they match exactly (case-insensitive).
     - If an answer is blank, mark it as incorrect but provide feedback as mentioned above.
     - Do not include explanations, markdown, text or formatting outside the JSON.
+    - The expected field should contain only the correct, expected answer.
+    - The feedback field should contain a brief explanation (No more than 2 sentences) for incorrect or blank answers.
     `;
 
 export default ANSWER_PROMPT;
