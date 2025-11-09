@@ -4,12 +4,10 @@ import React from "react";
 import InputLine from "../inputline.js";
 
 const ShortAnswerQuestion = ({
-  data,
   setCurrentQNum,
   writeAnswer,
   numQuestions,
 }: {
-  data: Question;
   setCurrentQNum: React.Dispatch<React.SetStateAction<number>>;
   writeAnswer: (answer: string) => void;
   numQuestions: number;

@@ -30,10 +30,9 @@ const QuizPhase = ({
       <Text>{`Q${currentQuestionNum} ${currentQuestion.content}`}</Text>
       {currentQuestion.type == "short" && (
         <ShortAnswerQuestion
-          data={currentQuestion as QuestionType}
           setCurrentQNum={setCurrentQuestionNum}
           numQuestions={numQuestions}
-          onSubmit={writeAnswer}
+          writeAnswer={writeAnswer}
         />
       )}
       {currentQuestion.type == "mc" && (
