@@ -13,6 +13,7 @@ const ANSWER_PROMPT = `
 
     Rules:
     - Mark true/false and multiple choice as correct only if they match exactly (case-insensitive).
+    - For multiple choice, the expected field should contain the correct option letter (e.g., "A", "B", "C", or "D") and the corresponding answer text.
     - If an answer is blank, mark it as incorrect but provide feedback as mentioned above.
     - Do not include explanations, markdown, text or formatting outside the JSON.
     - The expected field should contain only the correct, expected answer.
