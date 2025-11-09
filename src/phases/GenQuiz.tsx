@@ -21,6 +21,8 @@ const GenQuiz = ({
   setQuizPath: React.Dispatch<React.SetStateAction<string | null>>;
   setPhase: React.Dispatch<React.SetStateAction<Phase>>;
 }) => {
+  console.log("init");
+
   let path;
   if (!sourcePdfPath) {
     path = getMostRecentDownload();
@@ -31,6 +33,7 @@ const GenQuiz = ({
   (async () => {
     const quizJSON = await generateQuizFromPdf(sourcePdfPath as string, numQuestions, quizFormat);
     const quizPath = writeQuizJSON(`quiz_${stamp()}.json`, quizJSON);
+    console.log("test", quizPath);
 
     setQuizPath(quizPath);
     setPhase("quiz");

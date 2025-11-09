@@ -17,17 +17,22 @@ const QuizPhase = ({
   numQuestions: number;
 }) => {
   const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
-  const questions = JSON.parse(fs.readFileSync(quizPath, "utf8"));
-  const currentQuestion = questions[currentQuestionNum];
+  console.log("🚀 ~ QuizPhase.tsx ~ QuizPhase ~ currentQuestionNum: ", currentQuestionNum);
+
+  const response = JSON.parse(fs.readFileSync(quizPath, "utf8"));
+  console.log("🚀 ~ QuizPhase.tsx ~ QuizPhase ~ response: ", response);
+
+  const currentQuestion = response.questions[currentQuestionNum];
+  console.log("🚀 ~ QuizPhase.tsx ~ QuizPhase ~ currentQuestion: ", currentQuestion);
 
   function writeAnswer(answer: string) {
-    questions[currentQuestionNum].answer = answer;
-    fs.writeFileSync(quizPath, JSON.stringify(questions));
+    response[currentQuestionNum].answer = answer;
+    fs.writeFileSync(quizPath, JSON.stringify(response));
   }
 
   return (
     <Box flexDirection="column">
-      <Text>{`Q${currentQuestionNum} ${currentQuestion.content}`}</Text>
+      <Text>{`Q${currentQuestionNum + 1} ${currentQuestion.content}`}</Text>
       {currentQuestion.type == "short" && (
         <ShortAnswerQuestion
           setCurrentQNum={setCurrentQuestionNum}
@@ -39,6 +44,8 @@ const QuizPhase = ({
         <MultipleChoiceQuestion
           setCurrentQNum={setCurrentQuestionNum}
           numQuestions={numQuestions}
+          writeAnswer={writeAnswer}
+          setPhase={setPhase}
           currentQNum={currentQuestionNum}
         />
       )}
@@ -46,6 +53,8 @@ const QuizPhase = ({
         <TrueFalseQuestion
           setCurrentQNum={setCurrentQuestionNum}
           numQuestions={numQuestions}
+          writeAnswer={writeAnswer}
+          setPhase={setPhase}
           currentQNum={currentQuestionNum}
         />
       )}

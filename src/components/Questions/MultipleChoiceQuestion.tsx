@@ -3,6 +3,7 @@ import { Box } from "ink";
 import React from "react";
 import InputLine from "../inputline.js";
 import SelectInput from "ink-select-input";
+import Phase from "../../types/phase.js";
 
 const MultipleChoiceQuestion = ({
   setCurrentQNum,
@@ -11,11 +12,10 @@ const MultipleChoiceQuestion = ({
   currentQNum,
   numQuestions,
 }: {
-  data: Question;
-  currentQnum: number;
+  currentQNum: number;
   setCurrentQNum: React.Dispatch<React.SetStateAction<number>>;
   writeAnswer: (answer: string) => void;
-  setPhase: React.Dispatch<React.SetStateAction<string>>;
+  setPhase: React.Dispatch<React.SetStateAction<Phase>>;
   numQuestions: number;
 }) => {
   const options = [
@@ -28,14 +28,14 @@ const MultipleChoiceQuestion = ({
   return (
     <SelectInput
       items={options}
-      onSelect={(option) => {
+      onSelect={option => {
         writeAnswer(option.value);
 
-        if (currentQnum + 1 > numQuestions) {
+        if (currentQNum + 1 > numQuestions) {
           setPhase("results");
         }
 
-        setCurrentQNum((qNum) => {
+        setCurrentQNum(qNum => {
           const nextQIndex = qNum + 1;
 
           if (nextQIndex > numQuestions) return qNum;

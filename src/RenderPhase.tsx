@@ -20,10 +20,11 @@ const RenderPhase = ({
 }) => {
   const [phase, setPhase] = useState<Phase>("gen-quiz");
   const [quizPath, setQuizPath] = useState<string | null>(null);
+  const [error, setError] = useState<unknown>();
 
   if (phase == "gen-quiz") {
     return (
-      <ErrorBoundary fallback={<ErrorPhase />}>
+      <ErrorBoundary onError={setError} fallback={<ErrorPhase error={error} />}>
         <GenQuiz
           sourcePdfPath={sourcePdfPath}
           numQuestions={numQuestions}
@@ -43,21 +44,21 @@ const RenderPhase = ({
     );
   }
 
-  if (phase == "gen-answers") {
-    return (
-      <ErrorBoundary fallback={<ErrorPhase />}>
-        <GenAnswers quizPath={quizPath as string} setPhase={setPhase} />
-      </ErrorBoundary>
-    );
-  }
+  // if (phase == "gen-answers") {
+  //   return (
+  //     <ErrorBoundary fallback={<ErrorPhase />}>
+  //       <GenAnswers quizPath={quizPath as string} setPhase={setPhase} />
+  //     </ErrorBoundary>
+  //   );
+  // }
 
-  if (phase == "results") {
-    return (
-      <ErrorBoundary fallback={<ErrorPhase />}>
-        <ResultsPhase />
-      </ErrorBoundary>
-    );
-  }
+  // if (phase == "results") {
+  //   return (
+  //     <ErrorBoundary fallback={<ErrorPhase />}>
+  //       <ResultsPhase />
+  //     </ErrorBoundary>
+  //   );
+  // }
 
   return <ErrorPhase />;
 };

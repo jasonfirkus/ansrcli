@@ -24,14 +24,14 @@ export default function buildQuizPrompt(numQuestions: number, format: QuizFormat
     {
         "title": string,
         "questions": Array<
-            | {"id": number, "type":"tf", "question": string}
-            | {"id": number, "type":"mc", "question": string, "options": string[]}
-            | {"id": number, "type":"short", "question": string}
+            | {"type":"tf", "content": string}
+            | {"type":"mc", "content": string, "options": string[]}
+            | {"type":"short", "content": string}
         >
     }
 
     Rules:
-    Multiple choice options must be 3-5 items, with ONLY the text answer, not label.
+    Multiple choice options must be 4 items, with ONLY the text answer, not label.
     Answers must be concise and unambiguous.
     Do not include explanations, markdown, text or formatting outside the JSON.
     `;

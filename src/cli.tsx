@@ -5,7 +5,7 @@ import meow from "meow";
 import App from "./app.js";
 
 const cli = meow(
-	`
+  `
   Usage
     $ ansr <file.pdf>
 
@@ -13,8 +13,8 @@ const cli = meow(
     $ ansr ./data/sorting_quiz.json
     $ ansr ./slides/sorting.pdf
 `,
-	{ importMeta: import.meta }
+  { importMeta: import.meta }
 );
 
 const [filePath] = cli.input;
-render(<App filePath={filePath} />);
+render(<App sourcePdfPath={filePath} />);
