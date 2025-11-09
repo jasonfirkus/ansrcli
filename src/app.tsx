@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Text } from "ink";
 import Gradient from "ink-gradient";
 import BigText from "ink-big-text";
-import RenderPhase from "./RenderPhase.js";
+import RenderPhase from "./phases/RenderPhase.js";
 import QuizFormat from "./types/quiz-format.js";
 
 export default function App({

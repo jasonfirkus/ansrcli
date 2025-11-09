@@ -11,12 +11,14 @@ const TrueFalseQuestion = ({
   writeAnswer,
   setPhase,
   numQuestions,
+  currentQuestion,
 }: {
   currentQNum: number;
   setCurrentQNum: React.Dispatch<React.SetStateAction<number>>;
   writeAnswer: (answer: string) => void;
   setPhase: React.Dispatch<React.SetStateAction<Phase>>;
   numQuestions: number;
+  currentQuestion: Question;
 }) => {
   const handleSelect = (item: { label: string; value: string }) => {
     writeAnswer(item.value);
@@ -38,7 +40,16 @@ const TrueFalseQuestion = ({
     },
   ];
 
-  return <SelectInput items={items} onSelect={handleSelect} />;
+  return (
+    <SelectInput
+      items={items}
+      onSelect={handleSelect}
+      initialIndex={Math.max(
+        items.findIndex(item => item.value == currentQuestion?.answer),
+        0
+      )}
+    />
+  );
 };
 
 export default TrueFalseQuestion;

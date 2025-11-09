@@ -11,7 +11,6 @@ const ResultsPhase = ({
   numQuestions: number;
   setPhase: React.Dispatch<React.SetStateAction<Phase>>;
 }) => {
-  throw new Error("Test error in ResultsPhase");
   return <Text></Text>;
 };
 

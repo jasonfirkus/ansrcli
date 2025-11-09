@@ -1,13 +1,13 @@
-import Loading from "./components/Loading.js";
-import QuizPhase from "./phases/QuizPhase.js";
-import ResultsPhase from "./phases/ResultsPhase.js";
-import ErrorPhase from "./phases/ErrorPhase.js";
-import GenQuiz from "./phases/GenQuiz.js";
-import GenAnswers from "./phases/GenAnswers.js";
+import Loading from "../components/Loading.js";
+import QuizPhase from "../phases/QuizPhase.js";
+import ResultsPhase from "../phases/ResultsPhase.js";
+import ErrorPhase from "../phases/ErrorPhase.js";
+import GenQuiz from "../phases/GenQuiz.js";
+import GenAnswers from "../phases/GenAnswers.js";
 import React, { useState } from "react";
-import QuizFormat from "./types/quiz-format.js";
+import QuizFormat from "../types/quiz-format.js";
 import { ErrorBoundary } from "react-error-boundary";
-import type Phase from "./types/phase.js";
+import type Phase from "../types/phase.js";
 
 const RenderPhase = ({
   sourcePdfPath,

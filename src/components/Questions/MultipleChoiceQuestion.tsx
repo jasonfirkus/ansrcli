@@ -20,7 +20,7 @@ const MultipleChoiceQuestion = ({
   numQuestions: number;
   currentQuestion: Question;
 }) => {
-  const optionItems = [
+  const mcOptions = [
     { label: "A) " + options[0], value: "A" },
     { label: "B) " + options[1], value: "B" },
     { label: "C) " + options[2], value: "C" },
@@ -29,8 +29,11 @@ const MultipleChoiceQuestion = ({
 
   return (
     <SelectInput
-      initialIndex={currentQuestion?.answer ? 0 }
-      items={optionItems}
+      initialIndex={Math.max(
+        mcOptions.findIndex(option => option.value == currentQuestion?.answer),
+        0
+      )}
+      items={mcOptions}
       onSelect={option => {
         writeAnswer(option.value);
 

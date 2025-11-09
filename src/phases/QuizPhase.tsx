@@ -62,6 +62,7 @@ const QuizPhase = ({
           numQuestions={numQuestions}
           writeAnswer={writeAnswer}
           currentQuestion={currentQuestion}
+          setPhase={setPhase}
         />
       )}
 
