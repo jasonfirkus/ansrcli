@@ -1,7 +1,4 @@
-import type Question from "../../types/question.js";
-import { Box } from "ink";
 import React from "react";
-import InputLine from "../inputline.js";
 import SelectInput from "ink-select-input";
 import Phase from "../../types/phase.js";
 
@@ -9,33 +6,35 @@ const MultipleChoiceQuestion = ({
   setCurrentQNum,
   writeAnswer,
   setPhase,
+  options,
   currentQNum,
   numQuestions,
 }: {
   currentQNum: number;
   setCurrentQNum: React.Dispatch<React.SetStateAction<number>>;
   writeAnswer: (answer: string) => void;
+  options: string[];
   setPhase: React.Dispatch<React.SetStateAction<Phase>>;
   numQuestions: number;
 }) => {
-  const options = [
-    { label: "A", value: "A" },
-    { label: "B", value: "B" },
-    { label: "C", value: "C" },
-    { label: "D", value: "D" },
+  const optionItems = [
+    { label: "A) " + options[0], value: "A" },
+    { label: "B) " + options[1], value: "B" },
+    { label: "C) " + options[2], value: "C" },
+    { label: "D) " + options[3], value: "D" },
   ];
 
   return (
     <SelectInput
-      items={options}
-      onSelect={option => {
+      items={optionItems}
+      onSelect={(option) => {
         writeAnswer(option.value);
 
         if (currentQNum + 1 > numQuestions) {
           setPhase("results");
         }
 
-        setCurrentQNum(qNum => {
+        setCurrentQNum((qNum) => {
           const nextQIndex = qNum + 1;
 
           if (nextQIndex > numQuestions) return qNum;
