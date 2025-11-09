@@ -15,6 +15,7 @@ const GenAnswers = ({
   (async () => {
     // call gradequiz
     // setPhase to results
+    console.log("🚀 ~ GenAnswers.tsx ~ GenAnswers ~ quizPath: ", quizPath);
     const gradedQuiz = await gradeQuiz(quizPath);
     console.log("🚀 ~ GenAnswers.tsx ~ GenAnswers ~ gradedQuiz: ", gradedQuiz);
   })();

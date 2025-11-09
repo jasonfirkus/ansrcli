@@ -11,7 +11,7 @@ export default async function gradeQuiz(quizPath: string) {
     contents: [
       {
         inlineData: {
-          mimeType: "application/pdf",
+          mimeType: "application/json",
           data: Buffer.from(fs.readFileSync(quizPath)).toString("base64"),
         },
       },

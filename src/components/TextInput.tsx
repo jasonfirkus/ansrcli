@@ -34,15 +34,17 @@ export default function TextInput({
       setCurrentQuestionNum(qNum => {
         const nextQIndex = qNum + 1;
 
-        if (nextQIndex > numQuestions) {
+        if (nextQIndex >= numQuestions) {
           setPhase("gen-answers");
           return qNum;
         }
 
         return nextQIndex;
       });
+
       return;
     }
+
     if (key.backspace) {
       setBuffer(prev => prev.slice(0, -1));
       return;
