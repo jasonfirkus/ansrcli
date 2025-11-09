@@ -4,6 +4,7 @@ import { GoogleAIFileManager } from "@google/generative-ai/server";
 import path from "path";
 import "dotenv/config";
 import type { QuizFile, UserAnswer, GradeResult } from "./types/quizTypes.js";
+import buildQuizPrompt from "./prompts/build-quiz-prompt.js";
 
 const API_KEY = process.env["GOOGLE_API_KEY"];
 
@@ -35,7 +36,7 @@ export async function generateQuizFromPdf(localPath: string): Promise<QuizFile> 
   // Poll until processing is complete
   let fileMeta = await fileManager.getFile(uploadResult.file.name);
   while (fileMeta.state === "PROCESSING") {
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise(r => setTimeout(r, 2000));
     fileMeta = await fileManager.getFile(uploadResult.file.name);
   }
 
@@ -51,26 +52,7 @@ export async function generateQuizFromPdf(localPath: string): Promise<QuizFile> 
         fileUri: uploadResult.file.uri,
       },
     },
-    {
-      text: `You are given a PDF of slides. Generate 20 mixed questions
-(short answer, multiple choice, true/false) that fairly cover the material.
-
-Return ONLY valid JSON matching this TypeScript type:
-
-{
-  "title": string,
-  "questions": Array<
-    | {"id": number, "type":"true_false", "question": string, "answer": boolean}
-    | {"id": number, "type":"multiple_choice", "question": string, "options": string[], "answer": string}
-    | {"id": number, "type":"short_answer", "question": string, "answer": string}
-  >
-}
-
-Rules:
-Multiple choice options must be 3-5 items, labeled text like "A) ...", "B) ...".
-Answers must be concise and unambiguous.
-Do not include explanations, markdown, text or formatting outside the JSON.`,
-    },
+    { text: buildQuizPrompt({ numQuestions: 10, format: "mc,short,tf" }) },
   ]);
 
   const raw =
@@ -94,7 +76,7 @@ Do not include explanations, markdown, text or formatting outside the JSON.`,
       .replace(/^```\s*/i, "")
       .replace(/```\s*$/i, "")
       .trim();
-    
+
     const parsed = typeof cleaned === "string" ? JSON.parse(cleaned) : cleaned;
     return parsed as QuizFile;
   } catch (parseErr) {
@@ -107,62 +89,45 @@ Do not include explanations, markdown, text or formatting outside the JSON.`,
  * Uses simple string comparison for grading.
  */
 export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<GradeResult> {
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
-  const result = await model.generateContent([
-    {
-      text:
-      `You previously generated a quiz with the following questions and correct answers:
-      ${JSON.stringify(quiz, null, 2)}
-      The user provided the following answers:
-      ${JSON.stringify(answers, null, 2)}
-      Grade the user's answers. For short answer questions, be lenient with
-      spelling/capitalization and accept semantically equivalent answers.
-      Return ONLY valid JSON matching this TypeScript type:
-      {
-        "score": number,
-        "total": number,
-        "items": Array<{
-          "id": number,
-          "correct": boolean,
-          "expected"?: string,
-          "feedback"?: string
-        }>,
-        "summary"?: string
-      }
-      Rules:
-      - Mark true/false and multiple choice as correct only if they match exactly (case-insensitive).
-      - For short answers, be flexible and accept equivalent meanings.
-      - Provide brief feedback for incorrect answers.
-      - Include a summary with encouragement.
-      - If an answer is blank, assume the user failed to answer and mark it incorrect.
-      - Do not include explanations, markdown, text or formatting outside the JSON.`,
-    },
-  ]);
+  const items = answers.map(a => {
+    const q = quiz.questions.find(q => q.id === a.id);
+    if (!q) {
+      return {
+        id: a.id,
+        correct: false,
+        feedback: "Question not found",
+      };
+    }
 
-  const raw =
-    typeof result.response?.text === "function"
-      ? result.response.text()
-      : result.response?.text ?? null;
+    let correct = false;
+    const userValue = a.value.trim().toLowerCase();
 
-  if (!raw) {
-    throw new Error("No response from model");
-  }
+    if (q.type === "true_false") {
+      correct = userValue === String(q.answer).toLowerCase();
+    } else if (q.type === "multiple_choice") {
+      correct = userValue === q.answer?.toLowerCase();
+    } else if (q.type === "short_answer") {
+      correct = userValue === q.answer?.toLowerCase();
+    }
 
-  // Parse the JSON response
-  try {
-    // Remove markdown code fences and extra whitespace
-    const cleaned = raw
-      .trim()
-      .replace(/^```json\s*/i, "")
-      .replace(/^```\s*/i, "")
-      .replace(/```\s*$/i, "")
-      .trim();
-    
-    const parsed = typeof cleaned === "string" ? JSON.parse(cleaned) : cleaned;
-    return parsed as GradeResult;
-  } catch (parseErr) {
-    throw new Error(`Failed to parse grade result JSON: ${parseErr}`);
-  }
+    return {
+      id: a.id,
+      correct,
+      expected: String(q.answer),
+      feedback: correct ? "Correct!" : `Expected: ${q.answer}`,
+    };
+  });
+
+  const score = items.filter(item => item.correct).length;
+
+  return {
+    score,
+    total: answers.length,
+    items,
+    summary: `You got ${score} out of ${answers.length} correct (${Math.round(
+      (score / answers.length) * 100
+    )}%).`,
+  };
 }
 
 /**
