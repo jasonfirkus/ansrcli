@@ -24,7 +24,10 @@ const RenderPhase = ({
 
   if (phase == "gen-quiz") {
     return (
-      <ErrorBoundary onError={setError} fallback={<ErrorPhase error={error} />}>
+      <ErrorBoundary
+        onError={setError}
+        fallback={<ErrorPhase error={error as Error} />}
+      >
         <GenQuiz
           sourcePdfPath={sourcePdfPath}
           numQuestions={numQuestions}
@@ -38,29 +41,46 @@ const RenderPhase = ({
 
   if (phase == "quiz") {
     return (
-      <ErrorBoundary fallback={<ErrorPhase />}>
-        <QuizPhase quizPath={quizPath as string} setPhase={setPhase} numQuestions={numQuestions} />
+      <ErrorBoundary
+        onError={setError}
+        fallback={<ErrorPhase error={error as Error} />}
+      >
+        <QuizPhase
+          quizPath={quizPath as string}
+          setPhase={setPhase}
+          numQuestions={numQuestions}
+        />
       </ErrorBoundary>
     );
   }
 
-  // if (phase == "gen-answers") {
-  //   return (
-  //     <ErrorBoundary fallback={<ErrorPhase />}>
-  //       <GenAnswers quizPath={quizPath as string} setPhase={setPhase} />
-  //     </ErrorBoundary>
-  //   );
-  // }
+  if (phase == "gen-answers") {
+    return (
+      <ErrorBoundary
+        onError={setError}
+        fallback={<ErrorPhase error={error as Error} />}
+      >
+        <GenAnswers quizPath={quizPath as string} setPhase={setPhase} />
+      </ErrorBoundary>
+    );
+  }
 
-  // if (phase == "results") {
-  //   return (
-  //     <ErrorBoundary fallback={<ErrorPhase />}>
-  //       <ResultsPhase />
-  //     </ErrorBoundary>
-  //   );
-  // }
+  if (phase == "results") {
+    return (
+      <ErrorBoundary
+        onError={setError}
+        fallback={<ErrorPhase error={error as Error} />}
+      >
+        <ResultsPhase
+          sourcePdfPath={sourcePdfPath}
+          numQuestions={numQuestions}
+          setPhase={setPhase}
+        />
+      </ErrorBoundary>
+    );
+  }
 
-  return <ErrorPhase />;
+  return <ErrorPhase error={error as Error} />;
 };
 
 export default RenderPhase;
