@@ -1,4 +1,3 @@
-import Loading from "../components/Loading.js";
 import QuizPhase from "../phases/QuizPhase.js";
 import ResultsPhase from "../phases/ResultsPhase.js";
 import ErrorPhase from "../phases/ErrorPhase.js";
@@ -45,13 +44,7 @@ const RenderPhase = ({
         <GenAnswers quizPath={quizPath as string} setPhase={setPhase} />
       )}
 
-      {phase == "results" && (
-        <ResultsPhase
-          sourcePdfPath={sourcePdfPath}
-          numQuestions={numQuestions}
-          setPhase={setPhase}
-        />
-      )}
+      {phase == "results" && <ResultsPhase quizPath={quizPath as string} />}
     </ErrorBoundary>
   );
 };

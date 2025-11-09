@@ -1,4 +1,3 @@
-import { Text } from "ink";
 import React from "react";
 import QuizFormat from "../types/quiz-format.js";
 import Loading from "../components/Loading.js";

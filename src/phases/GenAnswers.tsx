@@ -1,4 +1,3 @@
-import { Text } from "ink";
 import React from "react";
 import Loading from "../components/Loading.js";
 import fs from "fs";
@@ -13,8 +12,6 @@ const GenAnswers = ({
   setPhase: React.Dispatch<React.SetStateAction<Phase>>;
 }) => {
   (async () => {
-    console.log("🚀 ~ GenAnswers.tsx ~ GenAnswers ~ quizPath: ", quizPath);
-    
     const gradingResults = await gradeQuiz(quizPath);
 
     const quizContent = fs.readFileSync(quizPath, "utf-8");
@@ -27,11 +24,10 @@ const GenAnswers = ({
         grading: gradingResults[index],
       })),
     };
-    
+
     fs.writeFileSync(quizPath, JSON.stringify(gradedQuiz));
-        console.log("🚀 ~ GenAnswers.tsx ~ GenAnswers ~ gradingResults: ", JSON.stringify(gradedQuiz));
-    
-    // setPhase("results");
+
+    setPhase("results");
   })();
 
   return <Loading message="Generating answers..." />;
