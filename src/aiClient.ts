@@ -117,6 +117,34 @@ export async function gradeQuiz(quiz: QuizFile, answers: UserAnswer[]): Promise<
       .trim();
 
     const parsed = typeof cleaned === "string" ? JSON.parse(cleaned) : cleaned;
+
+    // Build formatted output string
+    let responseBuilder = `Score: ${parsed.score} / ${parsed.total} (${Math.round((parsed.score / parsed.total) * 100)}%)\n\n`;
+    
+    if (parsed.summary) {
+      responseBuilder += `${parsed.summary}\n\n`;
+    }
+
+    for (let i = 0; i < parsed.items.length; i++) {
+      const item = parsed.items[i];
+      const question = quiz.questions.find(q => q.id === item.id);
+      const checkmark = item.correct ? "✓" : "✗";
+      
+      responseBuilder += `${i + 1}. ${checkmark} ${question?.question}\n`;
+      
+      if (!item.correct) {
+        if (item.expected) {
+          responseBuilder += `   Expected: ${item.expected}\n`;
+        }
+        if (item.feedback) {
+          responseBuilder += `   ${item.feedback}\n`;
+        }
+      }
+      responseBuilder += "\n";
+    }
+
+    parsed.output = responseBuilder.trim();
+
     return parsed as GradeResult;
   } catch (parseErr) {
     throw new Error(`Failed to parse grade result JSON: ${parseErr}`);
