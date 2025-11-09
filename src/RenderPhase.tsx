@@ -20,10 +20,9 @@ const RenderPhase = ({
 }) => {
   const [phase, setPhase] = useState<Phase>("gen-quiz");
   const [quizPath, setQuizPath] = useState<string | null>(null);
-  const [error, setError] = useState<Error | null>(null);
 
   return (
-    <ErrorBoundary onError={setError} fallback={<ErrorPhase error={error as Error} />}>
+    <ErrorBoundary FallbackComponent={ErrorPhase}>
       {phase == "gen-quiz" && (
         <GenQuiz
           sourcePdfPath={sourcePdfPath}
@@ -40,7 +39,13 @@ const RenderPhase = ({
 
       {phase == "gen-answers" && <GenAnswers quizPath={quizPath as string} setPhase={setPhase} />}
 
-      {phase == "quiz" && <ResultsPhase />}
+      {phase == "quiz" && (
+        <ResultsPhase
+          sourcePdfPath={sourcePdfPath}
+          numQuestions={numQuestions}
+          setPhase={setPhase}
+        />
+      )}
     </ErrorBoundary>
   );
 };
