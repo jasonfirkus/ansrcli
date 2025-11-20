@@ -2,9 +2,17 @@
 
 ansrCLI quickly generates quizzes from lecture notes by using Google's Gemini to analyze the source file and produce a balanced set of questions, including true/false, short answer, and multiple-choice, in seconds. Once you finish a quiz, your answers are graded and feedback is provided on what you could have done better.
 
-We hope this tool is helpful for students learning material through their education joruney.
+We hope this tool is helpful for students going through through their education journey.
 
-github repo: [https://github.com/jasonfirkus/ansrcli](https://github.com/jasonfirkus/ansrcli)
+## Tech Stack
+- **Frontend**: React, TypeScript, Ink (React renderer for CLI)
+- **AI Integration**: Google Gemini API
+
+## How It Works
+1. **Parse**: Extracts text content from your PDF
+2. **Generate**: Sends content to Gemini AI to create balanced quiz questions (multiple choice, true/false, short answer)
+3. **Quiz**: Interactive CLI interface guides you through questions
+4. **Grade**: Provides feedback and explanations for answers
 
 ## Install
 
