@@ -6,8 +6,8 @@ import cleanMarkdown from "../utils/clean-markdown.js";
 
 export default async function genQuiz(
   sourcePdfPath: string,
-  numQuestions = 10,
-  quizFormat = "mc,short,tf" as QuizFormat
+  numQuestions: number,
+  quizFormat: QuizFormat
 ): Promise<{
   sourcePdfPath: string;
   numQuestions: number;

@@ -11,7 +11,7 @@ Usage
   $ ansr <pathToPdf> [--questions=<number>] [--format=<types>]
 
 Arguments
-  <pathToPdf>         Path to the source PDF file (required). 
+  <pathToPdf>         Path to the source PDF file (optional). 
                       Defaults to most recently downloaded file in ~/Downloads.
 
 Options
@@ -45,5 +45,9 @@ Examples
 const [filePath] = cli.input;
 const { questions, format } = cli.flags;
 render(
-  <App sourcePdfPath={filePath} numQuestions={Number(questions)} format={format as QuizFormat} />
+  <App
+    sourcePdfPath={filePath}
+    numQuestions={Number(questions ?? 10)}
+    format={(format ?? "mc,short,tf") as QuizFormat}
+  />
 );

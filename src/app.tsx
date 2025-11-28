@@ -7,12 +7,12 @@ import QuizFormat from "./types/quiz-format.js";
 
 export default function App({
   sourcePdfPath,
-  numQuestions = 10,
-  format = "mc,short,tf",
+  numQuestions,
+  format,
 }: {
   sourcePdfPath?: string;
-  numQuestions?: number;
-  format?: QuizFormat;
+  numQuestions: number;
+  format: QuizFormat;
 }) {
   return (
     <Box flexDirection="column">
