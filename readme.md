@@ -1,6 +1,6 @@
 # ansrcli
 
-ansrCLI quickly generates quizzes from lecture notes by using Google's Gemini to analyze the source file and produce a balanced set of questions, including true/false, short answer, and multiple-choice, in seconds. Once you finish a quiz, your answers are graded and feedback is provided on what you could have done better.
+ansrcli quickly generates quizzes from lecture notes by using Google's Gemini to analyze the source file and produce a balanced set of questions, including true/false, short answer, and multiple-choice, in seconds. Once you finish a quiz, your answers are graded and feedback is provided on what you could have done better.
 
 We hope this tool is helpful for students going through through their education journey.
 
