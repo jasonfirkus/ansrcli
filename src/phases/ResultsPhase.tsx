@@ -6,6 +6,7 @@ import { useInput, Box } from "ink";
 import Answer from "../components/Answer.js";
 import ResultsSummary from "../components/ResultsSummary.js";
 import Quiz from "../types/quiz.js";
+import { resolveFromRoot } from "../utils/resolve-root.js";
 
 const ResultsPhase = ({
   quizPath,
@@ -17,13 +18,7 @@ const ResultsPhase = ({
   const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
   const [cursorVisible, setCursorVisible] = useState(true);
 
-  const quiz: Quiz = JSON.parse(
-    fs.readFileSync(
-      // quizPath
-      "C:\\Users\\jacec\\Documents\\CST\\COMP2522\\.ansr\\quiz_2025-11-28T17-00-43-285Z.json",
-      "utf8"
-    )
-  );
+  const quiz: Quiz = JSON.parse(fs.readFileSync(quizPath, "utf8"));
 
   useEffect(() => {
     const t = setInterval(() => setCursorVisible(v => !v), 500);
