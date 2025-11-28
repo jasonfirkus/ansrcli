@@ -3,6 +3,9 @@ import Loading from "../components/Loading.js";
 import fs from "fs";
 import type Phase from "../types/phase.js";
 import gradeQuiz from "../services/answers.service.js";
+import { Box } from "ink";
+import Gradient from "ink-gradient";
+import BigText from "ink-big-text";
 
 const GenAnswers = ({
   quizPath,
@@ -29,7 +32,15 @@ const GenAnswers = ({
     setPhase("results");
   })();
 
-  return <Loading message="Generating answers..." />;
+  return (
+    <Box flexDirection="column">
+      <Gradient name="mind">
+        <BigText text="ansr" font="block" letterSpacing={3} />
+      </Gradient>
+
+      <Loading message="Generating answers..." />
+    </Box>
+  );
 };
 
 export default GenAnswers;

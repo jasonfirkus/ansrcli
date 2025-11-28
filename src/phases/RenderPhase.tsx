@@ -17,7 +17,7 @@ const RenderPhase = ({
   numQuestions: number;
   quizFormat: QuizFormat;
 }) => {
-  const [phase, setPhase] = useState<Phase>("gen-quiz");
+  const [phase, setPhase] = useState<Phase>("results");
   const [quizPath, setQuizPath] = useState<string | null>(null);
 
   return (
@@ -44,7 +44,9 @@ const RenderPhase = ({
         <GenAnswers quizPath={quizPath as string} setPhase={setPhase} />
       )}
 
-      {phase == "results" && <ResultsPhase quizPath={quizPath as string} numQuestions={numQuestions} />}
+      {phase == "results" && (
+        <ResultsPhase quizPath={quizPath as string} numQuestions={numQuestions} />
+      )}
     </ErrorBoundary>
   );
 };

@@ -28,7 +28,7 @@ const QuizPhase = ({
 
   useInput((input, key) => {
     if (key.rightArrow) {
-      setCurrentQuestionNum((qNum) => {
+      setCurrentQuestionNum(qNum => {
         const nextQIndex = qNum + 1;
 
         if (nextQIndex > numQuestions - 1) return qNum;
@@ -40,7 +40,7 @@ const QuizPhase = ({
     }
 
     if (key.leftArrow) {
-      setCurrentQuestionNum((qNum) => {
+      setCurrentQuestionNum(qNum => {
         const prevQIndex = qNum - 1;
 
         if (prevQIndex < 0) return qNum;

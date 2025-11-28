@@ -1,5 +1,8 @@
 import type Question from "./question.js";
 
-type Quiz = Question[];
+interface Quiz {
+  title: string;
+  questions: Question[];
+}
 
 export default Quiz;

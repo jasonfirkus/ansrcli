@@ -4,6 +4,8 @@ import Phase from "../types/phase.js";
 import fs from "fs";
 import { useInput, Box } from "ink";
 import Answer from "../components/Answer.js";
+import ResultsSummary from "../components/ResultsSummary.js";
+import Quiz from "../types/quiz.js";
 
 const ResultsPhase = ({
   quizPath,
@@ -15,7 +17,13 @@ const ResultsPhase = ({
   const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
   const [cursorVisible, setCursorVisible] = useState(true);
 
-  const quiz = JSON.parse(fs.readFileSync(quizPath, "utf8"));
+  const quiz: Quiz = JSON.parse(
+    fs.readFileSync(
+      // quizPath
+      "C:\\Users\\jacec\\Documents\\CST\\COMP2522\\.ansr\\quiz_2025-11-28T17-00-43-285Z.json",
+      "utf8"
+    )
+  );
 
   useEffect(() => {
     const t = setInterval(() => setCursorVisible(v => !v), 500);
@@ -47,24 +55,21 @@ const ResultsPhase = ({
       return;
     }
 
-    if (key.return || (key.ctrl && input == 'q')) {
+    if (key.return) {
       process.exit(0);
-      return;
     }
   });
 
   return (
+    // split view with question card on right with red/green highlight & details on right
+    <Box flexDirection="column" gap={1}>
+      <Box flexDirection="row">
+        <ResultsSummary quiz={quiz} />
+      </Box>
 
-    <>
-      <Answer
-        currentQuestion={quiz.questions[currentQuestionNum]}
-      />
-      
-      <Text color={"green"}>
-        {cursorVisible ? <Text inverse> </Text> : " "}
-      </Text>
+      <Text color={"green"}>{cursorVisible ? <Text inverse> </Text> : " "}</Text>
 
-      <Box borderStyle="round" paddingX={1} gap={3}>
+      <Box paddingX={1} gap={3}>
         <Text>
           ← <Text dimColor>previous</Text>
         </Text>
@@ -73,12 +78,11 @@ const ResultsPhase = ({
           → <Text dimColor>next</Text>
         </Text>
         <Text>
-          Enter / Ctrl+Q / Ctrl+C <Text dimColor>exit program</Text>
+          ⏎ or ^+c <Text dimColor>exit program</Text>
         </Text>
       </Box>
-    </>
-
-  )
+    </Box>
+  );
 };
 
 export default ResultsPhase;
