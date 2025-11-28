@@ -40,14 +40,14 @@
         "When the sub-array length is less than 5.",
         "When the sub-arrays are of equal size."
       ],
-      "answer": "B",
-      "grading": { "correct": true, "expected": "B. When the sub-array has 0 or 1 element." }
+      "answer": "C",
+      "grading": { "correct": false, "expected": "B. When the sub-array has 0 or 1 element." }
     },
     {
       "type": "tf",
       "content": "The merging process in Mergesort typically requires an auxiliary array to temporarily hold elements while combining the sorted sub-arrays.",
-      "answer": "false",
-      "grading": { "correct": true, "expected": "false" }
+      "answer": "true",
+      "grading": { "correct": false, "expected": "false" }
     },
     {
       "type": "short",
@@ -91,9 +91,9 @@
         "Choosing a pivot that consistently results in highly unbalanced partitions.",
         "The presence of only unique elements in the array."
       ],
-      "answer": "C",
+      "answer": "A",
       "grading": {
-        "correct": true,
+        "correct": false,
         "expected": "C. Choosing a pivot that consistently results in highly unbalanced partitions."
       }
     }
