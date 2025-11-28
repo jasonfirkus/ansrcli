@@ -18,7 +18,12 @@ const ResultsPhase = ({
   const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
   const [cursorVisible, setCursorVisible] = useState(true);
 
-  const quiz: Quiz = JSON.parse(fs.readFileSync(quizPath, "utf8"));
+  const quiz: Quiz = JSON.parse(
+    fs.readFileSync(
+      resolveFromRoot("samples", "sample-quiz-1.json"), // quizPath
+      "utf8"
+    )
+  );
 
   useEffect(() => {
     const t = setInterval(() => setCursorVisible(v => !v), 500);

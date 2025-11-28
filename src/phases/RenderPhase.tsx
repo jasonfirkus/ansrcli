@@ -17,7 +17,7 @@ const RenderPhase = ({
   numQuestions: number;
   quizFormat: QuizFormat;
 }) => {
-  const [phase, setPhase] = useState<Phase>("gen-quiz");
+  const [phase, setPhase] = useState<Phase>("results");
   const [quizPath, setQuizPath] = useState<string | null>(null);
 
   return (
