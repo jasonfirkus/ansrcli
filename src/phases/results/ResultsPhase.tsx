@@ -16,46 +16,13 @@ const ResultsPhase = ({
   quizPath: string;
   numQuestions: number;
 }) => {
-  const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
-  const [cursorVisible, setCursorVisible] = useState(true);
-  const { exit } = useApp();
-
   const quiz: Quiz = JSON.parse(
     fs.readFileSync(
       resolveFromRoot("samples", "sample-quiz-1.json"), // quizPath
       "utf8"
     )
   );
-
-  useInput((input, key) => {
-    if (key.rightArrow) {
-      setCurrentQuestionNum(qNum => {
-        const nextQIndex = qNum + 1;
-
-        if (nextQIndex > numQuestions - 1) return qNum;
-
-        return nextQIndex;
-      });
-
-      return;
-    }
-
-    if (key.leftArrow) {
-      setCurrentQuestionNum(qNum => {
-        const prevQIndex = qNum - 1;
-
-        if (prevQIndex < 0) return qNum;
-
-        return prevQIndex;
-      });
-
-      return;
-    }
-
-    if (key.return) {
-      exit();
-    }
-  });
+  //TODO change questions to 2D array?
 
   return (
     <Box flexDirection="column" height={23}>
