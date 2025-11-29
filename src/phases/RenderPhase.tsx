@@ -1,5 +1,5 @@
 import QuizPhase from "../phases/QuizPhase.js";
-import ResultsPhase from "../phases/ResultsPhase.js";
+import ResultsPhase from "./results/ResultsPhase.js";
 import ErrorPhase from "../phases/ErrorPhase.js";
 import GenQuiz from "../phases/GenQuiz.js";
 import GenAnswers from "../phases/GenAnswers.js";

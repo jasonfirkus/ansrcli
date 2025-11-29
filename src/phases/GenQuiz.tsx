@@ -9,6 +9,7 @@ import writeQuizJSON from "../utils/write-quiz-json.js";
 import { Box } from "ink";
 import Gradient from "ink-gradient";
 import BigText from "ink-big-text";
+import Banner from "../components/Banner.js";
 
 const GenQuiz = ({
   sourcePdfPath,
@@ -40,9 +41,7 @@ const GenQuiz = ({
 
   return (
     <Box flexDirection="column">
-      <Gradient name="mind">
-        <BigText text="ansr" font="block" letterSpacing={3} />
-      </Gradient>
+      <Banner />
 
       <Loading message={"Generating quiz..."} />
     </Box>

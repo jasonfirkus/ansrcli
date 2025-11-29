@@ -4,8 +4,7 @@ import fs from "fs";
 import type Phase from "../types/phase.js";
 import gradeQuiz from "../services/answers.service.js";
 import { Box } from "ink";
-import Gradient from "ink-gradient";
-import BigText from "ink-big-text";
+import Banner from "../components/Banner.js";
 
 const GenAnswers = ({
   quizPath,
@@ -34,9 +33,7 @@ const GenAnswers = ({
 
   return (
     <Box flexDirection="column">
-      <Gradient name="mind">
-        <BigText text="ansr" font="block" letterSpacing={3} />
-      </Gradient>
+      <Banner />
 
       <Loading message="Generating answers..." />
     </Box>

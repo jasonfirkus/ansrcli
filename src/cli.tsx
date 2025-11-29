@@ -4,6 +4,7 @@ import { render } from "ink";
 import meow from "meow";
 import App from "./app.js";
 import type QuizFormat from "./types/quiz-format.js";
+import { enterAltScreen, leaveAltScreen } from "./utils/alt-screen.js";
 
 const cli = meow(
   `
@@ -41,13 +42,17 @@ Examples
 `,
   { importMeta: import.meta }
 );
-
 const [filePath] = cli.input;
 const { questions, format } = cli.flags;
-render(
+
+enterAltScreen();
+
+const { waitUntilExit } = render(
   <App
     sourcePdfPath={filePath}
     numQuestions={Number(questions ?? 10)}
     format={(format ?? "mc,short,tf") as QuizFormat}
   />
 );
+
+waitUntilExit().finally(() => leaveAltScreen());

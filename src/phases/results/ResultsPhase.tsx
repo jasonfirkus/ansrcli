@@ -1,12 +1,13 @@
-import { Text } from "ink";
+import { Spacer, Text, useApp, useInput, Box } from "ink";
 import React, { useState, useEffect } from "react";
-import Phase from "../types/phase.js";
+import Phase from "../../types/phase.js";
 import fs from "fs";
-import { useInput, Box } from "ink";
-import Answer from "../components/Answer.js";
-import ResultsSummary from "../components/ResultsSummary.js";
-import Quiz from "../types/quiz.js";
-import { resolveFromRoot } from "../utils/resolve-root.js";
+import Answer from "../../components/Answer.js";
+import ResultsSummary from "./ResultsSummary.js";
+import Quiz from "../../types/quiz.js";
+import { resolveFromRoot } from "../../utils/resolve-root.js";
+import ResultDetails from "./ResultDetails.js";
+import ResultsFooter from "./ResultsFooter.js";
 
 const ResultsPhase = ({
   quizPath,
@@ -17,6 +18,7 @@ const ResultsPhase = ({
 }) => {
   const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
   const [cursorVisible, setCursorVisible] = useState(true);
+  const { exit } = useApp();
 
   const quiz: Quiz = JSON.parse(
     fs.readFileSync(
@@ -24,11 +26,6 @@ const ResultsPhase = ({
       "utf8"
     )
   );
-
-  useEffect(() => {
-    const t = setInterval(() => setCursorVisible(v => !v), 500);
-    return () => clearInterval(t);
-  }, []);
 
   useInput((input, key) => {
     if (key.rightArrow) {
@@ -56,31 +53,20 @@ const ResultsPhase = ({
     }
 
     if (key.return) {
-      process.exit(0);
+      exit();
     }
   });
 
   return (
-    // split view with question card on right with red/green highlight & details on right
-    <Box flexDirection="column" gap={1}>
-      <Box flexDirection="row">
+    <Box flexDirection="column" height={23}>
+      <Box height={"100%"}>
         <ResultsSummary quiz={quiz} />
+        <ResultDetails />
       </Box>
 
-      <Text color={"green"}>{cursorVisible ? <Text inverse> </Text> : " "}</Text>
+      <Spacer />
 
-      <Box paddingX={1} gap={3}>
-        <Text>
-          ← <Text dimColor>previous</Text>
-        </Text>
-
-        <Text>
-          → <Text dimColor>next</Text>
-        </Text>
-        <Text>
-          ⏎ or ^+c <Text dimColor>exit program</Text>
-        </Text>
-      </Box>
+      <ResultsFooter />
     </Box>
   );
 };
