@@ -15,7 +15,7 @@ export default function App({
   const { exit } = useApp();
 
   useInput((input, key) => {
-    if (key.ctrl && input === "c") {
+    if (input === "q") {
       exit();
     }
   });

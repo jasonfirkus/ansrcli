@@ -24,7 +24,7 @@ const ResultsFooter = () => {
         </Text>
 
         <Text>
-          ⏎ <Text dimColor>or</Text> ctrl+c <Text dimColor>exit program</Text>
+          q <Text dimColor>exit program</Text>
         </Text>
       </Box>
     </Box>

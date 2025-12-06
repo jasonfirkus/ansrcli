@@ -52,7 +52,8 @@ const { waitUntilExit } = render(
     sourcePdfPath={filePath}
     numQuestions={Number(questions ?? 10)}
     format={(format ?? "mc,short,tf") as QuizFormat}
-  />
+  />,
+  { incrementalRendering: true }
 );
 
 waitUntilExit().finally(() => leaveAltScreen());

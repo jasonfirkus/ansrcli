@@ -1,54 +1,20 @@
-import React, { useState } from "react";
-import { Box, Text, useInput } from "ink";
-import Quiz from "../../types/quiz.js";
-import Gradient from "ink-gradient";
+import React from "react";
+import { Box, Text } from "ink";
+import { BOX, QUESTION_NAVIGATOR } from "../../constants/grid.js";
+import Question from "../../types/question.js";
 
-const SELECTED_BORDER_STYLE = {
-  topLeft: ".",
-  top: "-",
-  topRight: ".",
-  left: "|",
-  bottomLeft: ".",
-  bottom: "-",
-  bottomRight: ".",
-  right: "|",
-};
-
-const ResultsSummary = ({ quiz }: { quiz: Quiz }) => {
-  const [selectedQIndex, setSelectedQIndex] = useState(4);
-
+const ResultsSummary = ({
+  questions,
+  indexSelected,
+}: {
+  questions: Question[];
+  indexSelected: (index: number) => boolean;
+}) => {
   const totalCorrect = calcTotalCorrect();
-  const { questions } = quiz;
   const numQuestions = questions.length;
 
-  useInput((input, key) => {
-    if (key.rightArrow) {
-      setSelectedQIndex(qNum => {
-        const nextQIndex = qNum + 1;
-
-        if (nextQIndex > numQuestions - 1) return qNum;
-
-        return nextQIndex;
-      });
-
-      return;
-    }
-
-    if (key.leftArrow) {
-      setSelectedQIndex(qNum => {
-        const nextQIndex = qNum - 1;
-
-        if (nextQIndex < 0) return qNum;
-
-        return nextQIndex;
-      });
-
-      return;
-    }
-  });
-
   function calcTotalCorrect() {
-    return quiz.questions.reduce((acc, q) => (q?.grading?.correct ? acc + 1 : acc), 0);
+    return questions.reduce((acc, q) => (q?.grading?.correct ? acc + 1 : acc), 0);
   }
 
   return (
@@ -56,18 +22,20 @@ const ResultsSummary = ({ quiz }: { quiz: Quiz }) => {
       flexDirection="column"
       borderStyle="round"
       borderDimColor
-      width={"30%"}
-      height={"100%"}
+      width={`${QUESTION_NAVIGATOR.WIDTH * 100}%`}
+      height={`${QUESTION_NAVIGATOR.HEIGHT * 100}%`}
       alignItems="center">
-      <Box flexWrap="wrap" justifyContent="center">
+      {/* FIXME center while still justify left, maybe with fixed width? */}
+      <Box flexWrap="wrap" justifyContent="flex-start">
         {questions.map((q, index) => (
           <Box
+            key={index}
             borderStyle={"round"}
             borderColor={q.grading?.correct ? "green" : "red"}
-            backgroundColor={selectedQIndex === index ? "cyan" : "transparent"}
+            backgroundColor={indexSelected(index) ? "rgb(35, 96, 227)" : "transparent"}
             padding={0}
-            width={6}
-            height={3}
+            width={BOX.WIDTH}
+            height={BOX.HEIGHT}
             justifyContent="center">
             <Text>{index + 1}</Text>
           </Box>

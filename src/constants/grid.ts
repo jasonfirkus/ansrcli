@@ -1,0 +1,11 @@
+const BOX = {
+  WIDTH: 6,
+  HEIGHT: 3,
+};
+
+const QUESTION_NAVIGATOR = {
+  WIDTH: 0.3,
+  HEIGHT: 1,
+};
+
+export { BOX, QUESTION_NAVIGATOR };
