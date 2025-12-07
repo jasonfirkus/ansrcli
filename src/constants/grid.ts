@@ -3,9 +3,9 @@ const BOX = {
   HEIGHT: 3,
 };
 
-const QUESTION_NAVIGATOR = {
+const SIDE_PANEL = {
   WIDTH: 0.3,
   HEIGHT: 1,
 };
 
-export { BOX, QUESTION_NAVIGATOR };
+export { BOX, SIDE_PANEL };

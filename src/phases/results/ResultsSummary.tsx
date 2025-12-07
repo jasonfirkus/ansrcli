@@ -1,15 +1,9 @@
 import React from "react";
 import { Box, Text } from "ink";
-import { BOX, QUESTION_NAVIGATOR } from "../../constants/grid.js";
 import Question from "../../types/question.js";
+import { ANSR_BLUE, ANSR_BLUE_BG } from "../../constants/colors.js";
 
-const ResultsSummary = ({
-  questions,
-  indexSelected,
-}: {
-  questions: Question[];
-  indexSelected: (index: number) => boolean;
-}) => {
+const ResultsSummary = ({ questions }: { questions: Question[] }) => {
   const totalCorrect = calcTotalCorrect();
   const numQuestions = questions.length;
 
@@ -22,31 +16,16 @@ const ResultsSummary = ({
       flexDirection="column"
       borderStyle="round"
       borderDimColor
-      width={`${QUESTION_NAVIGATOR.WIDTH * 100}%`}
-      height={`${QUESTION_NAVIGATOR.HEIGHT * 100}%`}
-      alignItems="center">
-      {/* FIXME center while still justify left, maybe with fixed width? */}
-      <Box flexWrap="wrap" justifyContent="flex-start">
-        {questions.map((q, index) => (
-          <Box
-            key={index}
-            borderStyle={"round"}
-            borderColor={q.grading?.correct ? "green" : "red"}
-            backgroundColor={indexSelected(index) ? "rgb(35, 96, 227)" : "transparent"}
-            padding={0}
-            width={BOX.WIDTH}
-            height={BOX.HEIGHT}
-            justifyContent="center">
-            <Text>{index + 1}</Text>
-          </Box>
-        ))}
-      </Box>
-
+      alignItems="center"
+      height={"30%"}>
       <Text>
         {totalCorrect}/{numQuestions}, {((totalCorrect / numQuestions) * 100).toFixed(1)}%
       </Text>
 
       {/* TODO add topics to focus on (get from ai) */}
+      <Text color={ANSR_BLUE} bold>
+        Topics To Focus On
+      </Text>
     </Box>
   );
 };

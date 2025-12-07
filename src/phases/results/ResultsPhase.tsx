@@ -9,6 +9,8 @@ import ResultDetails from "./ResultDetails.js";
 import ResultsFooter from "./ResultsFooter.js";
 import useWindowSize from "../../hooks/useWindowSize.js";
 import useQuestionGridNavigator from "../../hooks/useQuestionGridNavigator.js";
+import QuizNavigator from "../../components/QuizNavigator.js";
+import { SIDE_PANEL } from "../../constants/grid.js";
 
 const ResultsPhase = ({
   quizPath,
@@ -32,7 +34,10 @@ const ResultsPhase = ({
   return (
     <Box flexDirection="column" height={rows - 1}>
       <Box height={"100%"}>
-        <ResultsSummary questions={questions} indexSelected={indexSelected} />
+        <Box flexDirection="column" width={`${SIDE_PANEL.WIDTH * 100}%`}>
+          <QuizNavigator questions={questions} indexSelected={indexSelected} />
+          <ResultsSummary questions={questions} />
+        </Box>
         <ResultDetails question={questions[qNum]!} num={qNum} />
       </Box>
 

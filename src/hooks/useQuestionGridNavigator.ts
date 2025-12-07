@@ -1,6 +1,6 @@
 import { useInput } from "ink";
 import React, { useState } from "react";
-import { BOX, QUESTION_NAVIGATOR } from "../constants/grid.js";
+import { BOX, SIDE_PANEL } from "../constants/grid.js";
 import useWindowSize from "./useWindowSize.js";
 
 interface Position {
@@ -10,7 +10,7 @@ interface Position {
 
 export default function useQuestionGridNavigator(numQuestions: number) {
   const [windowCols, windowRows] = useWindowSize();
-  const containerWidth = Math.floor(windowCols * QUESTION_NAVIGATOR.WIDTH);
+  const containerWidth = Math.floor(windowCols * SIDE_PANEL.WIDTH);
   const [cols, rows] = calcGridSize();
   const colsLastRow = numQuestions % cols || cols;
   const [pos, setPos] = useState<Position>({ row: 0, col: 0 });

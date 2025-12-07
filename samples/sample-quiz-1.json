@@ -13,7 +13,7 @@
       "answer": "C",
       "grading": {
         "correct": true,
-        "expected": "C. It is shifted through the sorted part until its correct position is found."
+        "expected": "C"
       }
     },
     {
@@ -41,7 +41,7 @@
         "When the sub-arrays are of equal size."
       ],
       "answer": "C",
-      "grading": { "correct": false, "expected": "B. When the sub-array has 0 or 1 element." }
+      "grading": { "correct": false, "expected": "B" }
     },
     {
       "type": "tf",
@@ -67,7 +67,7 @@
       "answer": "B",
       "grading": {
         "correct": true,
-        "expected": "B. To divide the list into two sub-lists: elements less than it and elements greater than it."
+        "expected": "B"
       }
     },
     {
@@ -94,7 +94,7 @@
       "answer": "A",
       "grading": {
         "correct": false,
-        "expected": "C. Choosing a pivot that consistently results in highly unbalanced partitions."
+        "expected": "C"
       }
     }
   ]

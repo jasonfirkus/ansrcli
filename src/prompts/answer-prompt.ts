@@ -1,12 +1,12 @@
 const ANSWER_PROMPT = `
-    You previously generated the attached quiz. The user has now answered it. Your job is to grade the user's answers. For any that are blank or incorrect, provide an in-depth explanantion of why they are incorrect with examples and a way to remember the correct answer.
+    You previously generated the attached quiz. The user has now answered it. Your job is to grade the user's answers. For any that are blank or incorrect, provide an in-depth explanation of why they are incorrect with examples and a way to remember the correct answer.
 
-    Return ONLY valid JSON matching this TypeScript type:
+    Return ONLY valid JSON matching this TypeScript type (for correct questions, no feedback is necessary):
 
     [
       {
         "correct": boolean,
-        "expected": string,
+        "expected": "A" | "B" | "C" | "D" | "true" | "false" | string, // string is ONLY valid for short answer questions
         "feedback"?: string
       },
     ]
