@@ -10,10 +10,18 @@ const ResultsFooter = () => {
       </Gradient>
 
       <Box gap={3}>
-        <Box flexDirection="row" gap={1}>
+        {/* <Box flexDirection="row" gap={1}>
           <Text>↑←↓→</Text>
-          <Text dimColor>navigate questions</Text>
-        </Box>
+          <Text dimColor>navigate</Text>
+        </Box> */}
+
+        <Text>
+          ↑←↓→ <Text dimColor>navigate</Text>
+        </Text>
+
+        <Text>
+          ⏎ <Text dimColor>next</Text>
+        </Text>
 
         <Text>
           r <Text dimColor>retry quiz</Text>
@@ -24,7 +32,7 @@ const ResultsFooter = () => {
         </Text>
 
         <Text>
-          q <Text dimColor>exit program</Text>
+          q <Text dimColor>exit</Text>
         </Text>
       </Box>
     </Box>

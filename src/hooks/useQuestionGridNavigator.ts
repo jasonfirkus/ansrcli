@@ -16,11 +16,29 @@ export default function useQuestionGridNavigator(numQuestions: number) {
   const [pos, setPos] = useState<Position>({ row: 0, col: 0 });
 
   useInput((input, key) => {
+    if (key.return) {
+      setPos(p => {
+        const lastQuestion = getQuestionNum() == numQuestions - 1;
+        const lastCol = p.col == cols - 1;
+
+        if (lastQuestion) {
+          return { row: 0, col: 0 };
+        }
+
+        if (lastCol) {
+          return { row: p.row + 1, col: 0 };
+        }
+
+        return { ...p, col: p.col + 1 };
+      });
+    }
+
     if (key.rightArrow) {
       setPos(p => {
         const posLastRow = p.row === rows - 1;
-        const posLastColInLastRow = pos.col === colsLastRow - 1;
-        if ((posLastRow && posLastColInLastRow) || pos.col === cols - 1) {
+        const posLastColInLastRow = p.col === colsLastRow - 1;
+
+        if ((posLastRow && posLastColInLastRow) || p.col === cols - 1) {
           return { ...p, col: 0 };
         }
 
@@ -34,7 +52,7 @@ export default function useQuestionGridNavigator(numQuestions: number) {
       setPos(p => {
         const posLastRow = p.row === rows - 1;
 
-        if (pos.col == 0) {
+        if (p.col == 0) {
           if (posLastRow) return { ...p, col: colsLastRow - 1 };
 
           return { ...p, col: cols - 1 };
@@ -69,7 +87,7 @@ export default function useQuestionGridNavigator(numQuestions: number) {
       setPos(p => {
         const isLastRow = p.row === rows - 1;
         const isSecondLastRow = p.row === rows - 2;
-        const colNotInLastRow = pos.col >= colsLastRow;
+        const colNotInLastRow = p.col >= colsLastRow;
 
         if (isLastRow || (isSecondLastRow && colNotInLastRow)) return { ...p, row: 0 };
 
