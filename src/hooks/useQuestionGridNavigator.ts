@@ -1,5 +1,5 @@
-import { useInput } from "ink";
-import React, { useState } from "react";
+import { useInput, measureElement, BoxProps, DOMElement } from "ink";
+import React, { useState, useMemo, useEffect } from "react";
 import { BOX, SIDE_PANEL } from "../constants/grid.js";
 import useWindowSize from "./useWindowSize.js";
 
@@ -8,12 +8,24 @@ interface Position {
   col: number;
 }
 
-export default function useQuestionGridNavigator(numQuestions: number) {
+export default function useQuestionGridNavigator(
+  numQuestions: number,
+  componentRef: React.RefObject<null>
+) {
   const [windowCols, windowRows] = useWindowSize();
-  const containerWidth = Math.floor(windowCols * SIDE_PANEL.WIDTH);
-  const [cols, rows] = calcGridSize();
+  const [[cols, rows], setGridSize] = useState<[number, number]>([0, 0]);
+
   const colsLastRow = numQuestions % cols || cols;
   const [pos, setPos] = useState<Position>({ row: 0, col: 0 });
+
+  //FIXME
+  useEffect(() => {
+    const { width, height } = measureElement(componentRef.current!);
+    // console.log(`measured width: ${width - 1} calc: ${(width - 1) / BOX.WIDTH}`);
+    const calculatedCols = Math.floor((width - 4) / BOX.WIDTH);
+
+    setGridSize(() => [calculatedCols, Math.ceil(numQuestions / calculatedCols)]);
+  }, [windowCols]);
 
   useInput((input, key) => {
     if (key.return) {
@@ -97,13 +109,6 @@ export default function useQuestionGridNavigator(numQuestions: number) {
       return;
     }
   });
-
-  function calcGridSize(): [number, number] {
-    const c = Math.floor(containerWidth / BOX.WIDTH);
-    const r = Math.ceil(numQuestions / c);
-
-    return [c, r];
-  }
 
   function indexSelected(index: number) {
     const row = Math.floor(index / cols);

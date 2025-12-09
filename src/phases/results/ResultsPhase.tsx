@@ -1,5 +1,5 @@
-import { Spacer, Box } from "ink";
-import React from "react";
+import { Spacer, Box, BoxProps } from "ink";
+import React, { useRef } from "react";
 import Phase from "../../types/phase.js";
 import fs from "fs";
 import ResultsSummary from "./ResultsSummary.js";
@@ -19,7 +19,8 @@ const ResultsPhase = ({
   quizPath: string;
   numQuestions: number;
 }) => {
-  const { indexSelected, getQuestionNum } = useQuestionGridNavigator(numQuestions);
+  const ref = useRef(null);
+  const { indexSelected, getQuestionNum } = useQuestionGridNavigator(numQuestions, ref);
   const qNum = getQuestionNum();
 
   const [, rows] = useWindowSize();
@@ -34,7 +35,7 @@ const ResultsPhase = ({
   return (
     <Box flexDirection="column" height={rows - 1}>
       <Box height={"100%"}>
-        <Box flexDirection="column" width={`${SIDE_PANEL.WIDTH * 100}%`}>
+        <Box flexDirection="column" width={`${SIDE_PANEL.WIDTH * 100}%`} ref={ref}>
           <QuizNavigator questions={questions} indexSelected={indexSelected} />
           <ResultsSummary questions={questions} />
         </Box>

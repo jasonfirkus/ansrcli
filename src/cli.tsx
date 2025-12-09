@@ -53,7 +53,7 @@ const { waitUntilExit } = render(
     numQuestions={Number(questions ?? 10)}
     format={(format ?? "mc,short,tf") as QuizFormat}
   />,
-  { incrementalRendering: true }
+  { incrementalRendering: true, patchConsole: false }
 );
 
 waitUntilExit().finally(() => leaveAltScreen());
