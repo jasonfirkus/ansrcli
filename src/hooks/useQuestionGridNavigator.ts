@@ -1,4 +1,4 @@
-import { useInput, measureElement, BoxProps, DOMElement } from "ink";
+import { useInput } from "ink";
 import React, { useState, useMemo, useEffect } from "react";
 import { BOX, SIDE_PANEL } from "../constants/grid.js";
 import useWindowSize from "./useWindowSize.js";
@@ -18,13 +18,12 @@ export default function useQuestionGridNavigator(
   const colsLastRow = numQuestions % cols || cols;
   const [pos, setPos] = useState<Position>({ row: 0, col: 0 });
 
-  //FIXME
   useEffect(() => {
-    const { width, height } = measureElement(componentRef.current!);
-    // console.log(`measured width: ${width - 1} calc: ${(width - 1) / BOX.WIDTH}`);
-    const calculatedCols = Math.floor((width - 4) / BOX.WIDTH);
+    const trueCols = (windowCols * SIDE_PANEL.WIDTH) / BOX.WIDTH;
+    const offset = trueCols - Math.trunc(trueCols) <= SIDE_PANEL.WIDTH ? 1 : 0;
+    const integerCols = Math.floor(trueCols) - offset;
 
-    setGridSize(() => [calculatedCols, Math.ceil(numQuestions / calculatedCols)]);
+    setGridSize(() => [integerCols, Math.ceil(numQuestions / integerCols)]);
   }, [windowCols]);
 
   useInput((input, key) => {

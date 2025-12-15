@@ -1,6 +1,5 @@
-import { Spacer, Box, BoxProps } from "ink";
+import { Spacer, Box } from "ink";
 import React, { useRef } from "react";
-import Phase from "../../types/phase.js";
 import fs from "fs";
 import ResultsSummary from "./ResultsSummary.js";
 import Quiz from "../../types/quiz.js";
