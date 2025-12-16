@@ -1,65 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { Text, useInput } from "ink";
-import Phase from "../types/phase.js";
 
 export default function TextInput({
-  prompt = ">",
+  prompt = "➤",
   color = "green",
-  numQuestions,
-  setCurrentQuestionNum,
   onSubmit,
-  defaultValue = "",
-  setPhase,
+  defaultAnswer = "",
 }: {
   prompt?: string;
   color?: string;
-  numQuestions: number;
-  setCurrentQuestionNum: React.Dispatch<React.SetStateAction<number>>;
   onSubmit: (value: string) => void;
-  defaultValue?: string;
-  setPhase: React.Dispatch<React.SetStateAction<Phase>>;
+  defaultAnswer?: string;
 }) {
-  const [buffer, setBuffer] = useState(defaultValue);
+  const [answer, setAnswer] = useState(defaultAnswer);
   const [cursorVisible, setCursorVisible] = useState(true);
 
   useEffect(() => {
     const t = setInterval(() => setCursorVisible(v => !v), 500);
+
     return () => clearInterval(t);
   }, []);
 
   useInput((input, key) => {
     if (key.return) {
-      onSubmit(buffer);
-      setBuffer("");
-      setCurrentQuestionNum(qNum => {
-        const nextQIndex = qNum + 1;
-
-        if (nextQIndex >= numQuestions) {
-          setPhase("gen-answers");
-          return qNum;
-        }
-
-        return nextQIndex;
-      });
-
+      onSubmit(answer); //writeAnswer(answer);
       return;
     }
 
-    if (key.backspace) {
-      setBuffer(prev => prev.slice(0, -1));
+    if (key.backspace || key.delete) {
+      setAnswer(prev => prev.slice(0, -1));
       return;
     }
 
-    if (key.ctrl && input.toLowerCase() === "q") {
-      process.exit(0);
-      return;
+    if (input) {
+      setAnswer(prev => prev + input);
     }
-    if (input) setBuffer(prev => prev + input);
   });
 
   return (
     <Text color={color}>
-      {prompt} {buffer}
+      {prompt} {answer}
       {cursorVisible ? <Text inverse> </Text> : " "}
     </Text>
   );

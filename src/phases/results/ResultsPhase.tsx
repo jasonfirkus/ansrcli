@@ -1,5 +1,5 @@
-import { Spacer, Box } from "ink";
-import React, { useRef } from "react";
+import { Spacer, Box, Text } from "ink";
+import React from "react";
 import fs from "fs";
 import ResultsSummary from "./ResultsSummary.js";
 import Quiz from "../../types/quiz.js";
@@ -8,7 +8,7 @@ import ResultDetails from "./ResultDetails.js";
 import ResultsFooter from "./ResultsFooter.js";
 import useWindowSize from "../../hooks/useWindowSize.js";
 import useQuestionGridNavigator from "../../hooks/useQuestionGridNavigator.js";
-import QuizNavigator from "../../components/QuizNavigator.js";
+import Navigator from "../../components/Navigator.js";
 import { SIDE_PANEL } from "../../constants/grid.js";
 
 const ResultsPhase = ({
@@ -18,24 +18,38 @@ const ResultsPhase = ({
   quizPath: string;
   numQuestions: number;
 }) => {
-  const ref = useRef(null);
-  const { indexSelected, getQuestionNum } = useQuestionGridNavigator(numQuestions, ref);
+  const { indexSelected, getQuestionNum } = useQuestionGridNavigator(numQuestions);
   const qNum = getQuestionNum();
 
   const [, rows] = useWindowSize();
+  // const quiz = JSON.parse(fs.readFileSync(quizPath, "utf8"));
   const quiz: Quiz = JSON.parse(
-    fs.readFileSync(
-      resolveFromRoot("samples", "sample-quiz-1.json"), // quizPath
-      "utf8"
-    )
+    fs.readFileSync(resolveFromRoot("samples", "sample-quiz-1.json"), "utf8")
   );
   const { questions } = quiz;
+  const totalCorrect = calcTotalCorrect();
+
+  function calcTotalCorrect() {
+    return questions.reduce((acc, q) => (q?.grading?.correct ? acc + 1 : acc), 0);
+  }
 
   return (
     <Box flexDirection="column" height={rows - 1}>
       <Box height={"100%"}>
-        <Box flexDirection="column" width={`${SIDE_PANEL.WIDTH * 100}%`} ref={ref}>
-          <QuizNavigator questions={questions} indexSelected={indexSelected} />
+        <Box flexDirection="column" width={`${SIDE_PANEL.WIDTH * 100}%`}>
+          <Box
+            flexDirection="column"
+            alignItems="center"
+            gap={1}
+            borderDimColor
+            borderStyle={"round"}
+            height={"70%"}>
+            <Navigator questions={questions} indexSelected={indexSelected} />
+            <Text>
+              <Text color={"green"}> {totalCorrect}</Text>/{numQuestions},{" "}
+              {((totalCorrect / numQuestions) * 100).toFixed(1)}%
+            </Text>
+          </Box>
           <ResultsSummary questions={questions} />
         </Box>
         <ResultDetails question={questions[qNum]!} num={qNum} />

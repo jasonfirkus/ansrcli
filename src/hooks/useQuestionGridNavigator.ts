@@ -1,5 +1,5 @@
 import { useInput } from "ink";
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BOX, SIDE_PANEL } from "../constants/grid.js";
 import useWindowSize from "./useWindowSize.js";
 
@@ -8,10 +8,7 @@ interface Position {
   col: number;
 }
 
-export default function useQuestionGridNavigator(
-  numQuestions: number,
-  componentRef: React.RefObject<null>
-) {
+export default function useQuestionGridNavigator(numQuestions: number) {
   const [windowCols, windowRows] = useWindowSize();
   const [[cols, rows], setGridSize] = useState<[number, number]>([0, 0]);
 

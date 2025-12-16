@@ -1,53 +1,25 @@
 import type Question from "../../types/question.js";
-import { Box, Text } from "ink";
 import React from "react";
-import TextInput from "../TextInput.js";
 import SelectInput from "ink-select-input";
-import Phase from "../../types/phase.js";
+
+const TF_ITEMS = [
+  { label: "True", value: "true" },
+  { label: "False", value: "false" },
+];
 
 const TrueFalseQuestion = ({
-  currentQNum,
-  setCurrentQNum,
   writeAnswer,
-  setPhase,
-  numQuestions,
-  currentQuestion,
+  question,
 }: {
-  currentQNum: number;
-  setCurrentQNum: React.Dispatch<React.SetStateAction<number>>;
   writeAnswer: (answer: string) => void;
-  setPhase: React.Dispatch<React.SetStateAction<Phase>>;
-  numQuestions: number;
-  currentQuestion: Question;
+  question: Question;
 }) => {
-  const handleSelect = (item: { label: string; value: string }) => {
-    writeAnswer(item.value);
-
-    if (currentQNum + 1 >= numQuestions) {
-      setPhase("gen-answers");
-      return;
-    }
-
-    setCurrentQNum(prev => prev + 1);
-  };
-
-  const items = [
-    {
-      label: "True",
-      value: "true",
-    },
-    {
-      label: "False",
-      value: "false",
-    },
-  ];
-
   return (
     <SelectInput
-      items={items}
-      onSelect={handleSelect}
+      items={TF_ITEMS}
+      onSelect={item => writeAnswer(item.value)}
       initialIndex={Math.max(
-        items.findIndex(item => item.value == currentQuestion?.answer),
+        TF_ITEMS.findIndex(item => item.value == question?.answer),
         0
       )}
     />

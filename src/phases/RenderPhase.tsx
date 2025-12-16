@@ -1,4 +1,4 @@
-import QuizPhase from "../phases/QuizPhase.js";
+import QuizPhase from "./quiz/QuizPhase.js";
 import ResultsPhase from "./results/ResultsPhase.js";
 import ErrorPhase from "../phases/ErrorPhase.js";
 import GenQuiz from "../phases/GenQuiz.js";
@@ -17,7 +17,7 @@ const RenderPhase = ({
   numQuestions: number;
   quizFormat: QuizFormat;
 }) => {
-  const [phase, setPhase] = useState<Phase>("results");
+  const [phase, setPhase] = useState<Phase>("quiz");
   const [quizPath, setQuizPath] = useState<string | null>(null);
 
   return (

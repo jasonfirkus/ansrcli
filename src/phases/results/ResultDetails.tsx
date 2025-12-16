@@ -5,6 +5,7 @@ import MultipleChoiceResults from "./MultipleChoiceResults.js";
 import { ANSR_BLUE } from "../../constants/colors.js";
 import TrueFalseResults from "./TrueFalseResults.js";
 import ShortAnswerResults from "../../components/ShortAnswerResults.js";
+import QuestionHeader from "../../components/QuestionHeader.js";
 
 const ResultDetails = ({ question, num }: { question: Question; num: number }) => {
   return (
@@ -15,12 +16,7 @@ const ResultDetails = ({ question, num }: { question: Question; num: number }) =
       borderDimColor
       paddingX={1}
       gap={1}>
-      <Text>
-        <Text color={ANSR_BLUE} bold>
-          Q{num + 1}:{" "}
-        </Text>
-        {question.content}
-      </Text>
+      <QuestionHeader num={num} content={question.content} />
 
       {question.type === "mc" && (
         <MultipleChoiceResults

@@ -1,8 +1,8 @@
-import { Text, Box } from "ink";
-import Gradient from "ink-gradient";
 import React from "react";
+import { Box, Text } from "ink";
+import Gradient from "ink-gradient";
 
-const ResultsFooter = () => {
+const QuizFooter = () => {
   return (
     <Box justifyContent="space-between">
       <Gradient name="vice">
@@ -15,16 +15,20 @@ const ResultsFooter = () => {
         </Text>
 
         <Text>
-          ⏎ <Text dimColor>next</Text>
+          j<Text dimColor> / </Text>k <Text dimColor>change answer</Text>
         </Text>
 
         <Text>
+          ⏎ <Text dimColor>submit answer</Text>
+        </Text>
+
+        {/* <Text>
           r <Text dimColor>retry quiz</Text>
         </Text>
 
         <Text>
           n <Text dimColor>new quiz (same source)</Text>
-        </Text>
+        </Text> */}
 
         <Text>
           q <Text dimColor>exit</Text>
@@ -34,4 +38,4 @@ const ResultsFooter = () => {
   );
 };
 
-export default ResultsFooter;
+export default QuizFooter;
