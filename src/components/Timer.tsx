@@ -7,7 +7,6 @@ import formatSeconds from "../utils/format-seconds.js";
 const Timer = ({ quiz, quizPath }: { quiz: Quiz; quizPath: string }) => {
   const [seconds, setSeconds] = useState(0);
   const secondsRef = useRef(0);
-  const minutes = Math.floor(seconds / 60);
 
   useEffect(() => {
     const secondInterval = setInterval(() => {
@@ -17,16 +16,21 @@ const Timer = ({ quiz, quizPath }: { quiz: Quiz; quizPath: string }) => {
       });
     }, 1000);
 
-    const saveInterval = setInterval(() => {
-      quiz.secondsElapsed = secondsRef.current;
-      fs.writeFileSync(quizPath, JSON.stringify(quiz));
-    }, 5000);
+    saveSeconds(); // save 0 on mount
+    const saveInterval = setInterval(saveSeconds, 5000);
 
     return () => {
       clearInterval(secondInterval);
       clearInterval(saveInterval);
+
+      saveSeconds(); // save final time on unmount
     };
   }, []);
+
+  function saveSeconds() {
+    quiz.secondsElapsed = secondsRef.current;
+    fs.writeFileSync(quizPath, JSON.stringify(quiz));
+  }
 
   return <Text>{formatSeconds(seconds)} elapsed</Text>;
 };

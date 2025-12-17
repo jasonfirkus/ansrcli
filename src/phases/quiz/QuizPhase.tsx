@@ -71,7 +71,7 @@ const QuizPhase = ({
             borderStyle={"round"}
             height={"100%"}>
             <Navigator indexSelected={indexSelected} questions={questions} />
-            <Timer quiz={quiz} quizPath={quizPath} />
+            <Timer quiz={quiz} quizPath={resolveFromRoot("samples", "sample-quiz-1.json")} />
           </Box>
         </Box>
 
