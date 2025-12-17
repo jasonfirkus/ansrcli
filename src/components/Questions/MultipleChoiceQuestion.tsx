@@ -1,6 +1,5 @@
 import React from "react";
 import SelectInput from "ink-select-input";
-import Phase from "../../types/phase.js";
 import Question from "../../types/question.js";
 
 const MultipleChoiceQuestion = ({

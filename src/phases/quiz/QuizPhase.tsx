@@ -15,6 +15,7 @@ import Navigator from "../../components/Navigator.js";
 import { SIDE_PANEL } from "../../constants/grid.js";
 import useQuestionGridNavigator from "../../hooks/useQuestionGridNavigator.js";
 import type Question from "../../types/question.js";
+import Timer from "../../components/Timer.js";
 
 const QuizPhase = ({
   quizPath,
@@ -70,6 +71,7 @@ const QuizPhase = ({
             borderStyle={"round"}
             height={"100%"}>
             <Navigator indexSelected={indexSelected} questions={questions} />
+            <Timer />
           </Box>
         </Box>
 
