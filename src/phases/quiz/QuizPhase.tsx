@@ -71,7 +71,7 @@ const QuizPhase = ({
             borderStyle={"round"}
             height={"100%"}>
             <Navigator indexSelected={indexSelected} questions={questions} />
-            <Timer />
+            <Timer quiz={quiz} quizPath={quizPath} />
           </Box>
         </Box>
 

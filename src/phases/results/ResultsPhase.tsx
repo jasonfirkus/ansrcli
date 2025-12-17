@@ -45,12 +45,13 @@ const ResultsPhase = ({
             borderStyle={"round"}
             height={"70%"}>
             <Navigator questions={questions} indexSelected={indexSelected} />
+
             <Text>
               <Text color={"green"}> {totalCorrect}</Text>/{numQuestions},{" "}
-              {((totalCorrect / numQuestions) * 100).toFixed(1)}%
+              {Math.round((totalCorrect / numQuestions) * 100)}%
             </Text>
           </Box>
-          <ResultsSummary questions={questions} />
+          <ResultsSummary time={quiz.secondsElapsed} />
         </Box>
         <ResultDetails question={questions[qNum]!} num={qNum} />
       </Box>
