@@ -13,7 +13,7 @@
     "build": "tsc",
     "dev": "tsx watch src/cli.tsx",
     "test": "prettier --check . && xo && ava",
-    "setup": "npm i && npm link"
+    "setup": "cp sample-quiz-1.example.json sample-quiz-1.json"
   },
   "files": [
     "dist"

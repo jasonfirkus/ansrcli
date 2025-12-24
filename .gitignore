@@ -2,3 +2,5 @@ node_modules
 dist
 .env
 .ansr
+
+/samples/sample-quiz-1.json
