@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import type Phase from "../../types/phase.js";
 import fs from "fs";
 import MultipleChoiceQuestion from "../../components/Questions/MultipleChoiceQuestion.js";
@@ -17,6 +17,7 @@ import type Question from "../../types/question.js";
 import Timer from "../../components/Timer.js";
 import { ANSR_BLUE } from "../../constants/colors.js";
 import TextInput from "../../components/TextInput.js";
+import { TitledBox } from "@mishieck/ink-titled-box";
 
 const QuizPhase = ({
   quizPath,
@@ -67,6 +68,7 @@ const QuizPhase = ({
     <Box flexDirection="column" height={rows - 1}>
       <Box height={"100%"}>
         <Box flexDirection="column" width={`${SIDE_PANEL.WIDTH * 100}%`}>
+          {/* FIXME currently a bug with TitledBox and flexWrap Box child causing blank row at certain widths */}
           <Box
             flexDirection="column"
             alignItems="center"
@@ -101,7 +103,7 @@ const QuizPhase = ({
           borderStyle="round"
           borderDimColor
           paddingX={1}
-          gap={1}>
+          gap={2}>
           <QuestionHeader num={qNum} content={currentQuestion.content} />
 
           {currentQuestion?.type == "short" && (

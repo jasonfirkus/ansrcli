@@ -13,14 +13,13 @@ const Navigator = ({
 }) => {
   return (
     // FIXME center while still justify left, maybe with fixed width?
-    <Box flexWrap="wrap" justifyContent="flex-start">
+    <Box flexWrap={"wrap"} justifyContent="flex-start" width={"100%"}>
       {questions.map((q, index) => (
         <Box
           key={index}
           borderStyle={"round"}
           borderColor={q.grading?.correct ? "green" : "red"}
           backgroundColor={indexSelected(index) ? ANSR_BLUE_BG : "transparent"}
-          padding={0}
           width={BOX.WIDTH}
           height={BOX.HEIGHT}
           justifyContent="center">

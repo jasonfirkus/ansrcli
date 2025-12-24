@@ -24,7 +24,7 @@
     "@mishieck/ink-titled-box": "^0.3.0",
     "cli-cursor": "^5.0.0",
     "dotenv": "^17.2.3",
-    "ink": "^6.5.0",
+    "ink": "6.6.0",
     "ink-big-text": "^2.0.0",
     "ink-gradient": "^3.0.0",
     "ink-select-input": "^6.2.0",

@@ -7,6 +7,8 @@ import React, { useState } from "react";
 import QuizFormat from "../types/quiz-format.js";
 import { ErrorBoundary } from "react-error-boundary";
 import type Phase from "../types/phase.js";
+import { TitledBox } from "@mishieck/ink-titled-box";
+import { Box, Text } from "ink";
 
 const RenderPhase = ({
   sourcePdfPath,
@@ -46,6 +48,33 @@ const RenderPhase = ({
 
       {phase == "results" && (
         <ResultsPhase quizPath={quizPath as string} numQuestions={numQuestions} />
+      )}
+
+      {phase == "test" && (
+        <Box width={"30%"}>
+          <TitledBox
+            titles={["test"]}
+            borderStyle="round"
+            flexDirection="column"
+            alignItems="center"
+            gap={1}>
+            <Box flexWrap={"wrap"} justifyContent="flex-start">
+              {Array.from({ length: 7 }).map((_, i) => (
+                <Box key={i} borderStyle={"round"} paddingX={1}>
+                  <Text>i</Text>
+                </Box>
+              ))}
+            </Box>
+          </TitledBox>
+        </Box>
+      )}
+
+      {phase == "test2" && (
+        <Box borderStyle={"round"} borderDimColor>
+          <Text color={"blue"} bold>
+            this shouldn't be dimmed
+          </Text>
+        </Box>
       )}
     </ErrorBoundary>
   );

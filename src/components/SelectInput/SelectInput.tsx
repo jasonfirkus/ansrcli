@@ -185,7 +185,7 @@ function SelectInput<V>({
   const slicedItems = hasLimit ? arrayToRotated(items, rotateIndex).slice(0, limit) : items;
 
   return (
-    <Box flexDirection="column">
+    <Box flexDirection="column" gap={1}>
       {slicedItems.map((item, index) => {
         const isSelected = index === selectedIndex;
 

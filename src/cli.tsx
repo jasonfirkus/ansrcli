@@ -53,7 +53,8 @@ const { waitUntilExit } = render(
     numQuestions={Number(questions ?? 10)}
     format={(format ?? "mc,short,tf") as QuizFormat}
   />,
-  { incrementalRendering: true, patchConsole: false }
+  // bug with incrementalRendering on 6.6.0 causing parts of some Box borders to not be rendered
+  { incrementalRendering: false, patchConsole: false }
 );
 
 waitUntilExit().finally(() => leaveAltScreen());
