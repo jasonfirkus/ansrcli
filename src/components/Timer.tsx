@@ -32,7 +32,7 @@ const Timer = ({ quiz, quizPath }: { quiz: Quiz; quizPath: string }) => {
     fs.writeFileSync(quizPath, JSON.stringify(quiz));
   }
 
-  return <Text>{formatSeconds(seconds)} elapsed</Text>;
+  return <Text>{formatSeconds(seconds)}</Text>;
 };
 
 export default Timer;

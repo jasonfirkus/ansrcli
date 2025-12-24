@@ -16,6 +16,7 @@ import { SIDE_PANEL } from "../../constants/grid.js";
 import useQuestionGridNavigator from "../../hooks/useQuestionGridNavigator.js";
 import type Question from "../../types/question.js";
 import Timer from "../../components/Timer.js";
+import { ANSR_BLUE } from "../../constants/colors.js";
 
 const QuizPhase = ({
   quizPath,
@@ -38,9 +39,12 @@ const QuizPhase = ({
   );
   const { questions } = quiz;
   const currentQuestion = questions[qNum];
+  const numAnswers = questions.filter(q => q.answer !== undefined).length;
 
   useInput((input, key) => {
-    if (key.return && qNum + 1 == numQuestions) {
+    const isLastQuestion = qNum + 1 == numQuestions;
+
+    if (key.return && isLastQuestion) {
       setPhase("gen-answers");
     }
   });
@@ -69,8 +73,24 @@ const QuizPhase = ({
             gap={1}
             borderDimColor
             borderStyle={"round"}
-            height={"100%"}>
+            height={"80%"}>
             <Navigator indexSelected={indexSelected} questions={questions} />
+            <Text>
+              {numAnswers}/{numQuestions} answers saved
+            </Text>
+          </Box>
+          <Box
+            flexDirection="column"
+            alignItems="center"
+            gap={1}
+            borderDimColor
+            borderStyle={"round"}
+            height={"20%"}>
+            <Box paddingLeft={1}>
+              <Text color={ANSR_BLUE} bold>
+                Time Elapsed:
+              </Text>
+            </Box>
             <Timer quiz={quiz} quizPath={resolveFromRoot("samples", "sample-quiz-1.json")} />
           </Box>
         </Box>

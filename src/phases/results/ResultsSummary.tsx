@@ -9,7 +9,7 @@ const ResultsSummary = ({ time = 0 }: { time?: number }) => {
       flexDirection="column"
       borderStyle="round"
       height={"30%"}
-      // borderDimColor bug with this, affects all left text
+      // borderDimColor // bug with this, affects all left text
       borderColor={"rgb(127, 127, 127)"}
       gap={1}>
       {/* TODO add topics to focus on (get from ai) */}
