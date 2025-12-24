@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Text, useInput } from "ink";
+import { ANSR_BLUE } from "../constants/colors.js";
 
 export default function TextInput({
   prompt = "➤",
-  color = "green",
+  color = ANSR_BLUE,
   onSubmit,
   defaultAnswer = "",
 }: {

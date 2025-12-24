@@ -1,6 +1,6 @@
 import type Question from "../../types/question.js";
 import React from "react";
-import SelectInput from "ink-select-input";
+import SelectInput from "../SelectInput/index.js";
 
 const TF_ITEMS = [
   { label: "True", value: "true" },

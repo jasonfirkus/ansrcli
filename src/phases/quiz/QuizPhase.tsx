@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import type Phase from "../../types/phase.js";
 import fs from "fs";
-import ShortAnswerQuestion from "../../components/Questions/ShortAnswerQuestion.js";
 import MultipleChoiceQuestion from "../../components/Questions/MultipleChoiceQuestion.js";
 import TrueFalseQuestion from "../../components/Questions/TrueFalseQuestion.js";
 import { Text, Box } from "ink";
@@ -17,6 +16,7 @@ import useQuestionGridNavigator from "../../hooks/useQuestionGridNavigator.js";
 import type Question from "../../types/question.js";
 import Timer from "../../components/Timer.js";
 import { ANSR_BLUE } from "../../constants/colors.js";
+import TextInput from "../../components/TextInput.js";
 
 const QuizPhase = ({
   quizPath,
@@ -105,7 +105,10 @@ const QuizPhase = ({
           <QuestionHeader num={qNum} content={currentQuestion.content} />
 
           {currentQuestion?.type == "short" && (
-            <ShortAnswerQuestion writeAnswer={writeAnswer} question={currentQuestion} />
+            <TextInput
+              onSubmit={raw => writeAnswer(raw)}
+              defaultAnswer={currentQuestion.answer}
+            />
           )}
           {currentQuestion?.type == "mc" && (
             <MultipleChoiceQuestion writeAnswer={writeAnswer} question={currentQuestion} />

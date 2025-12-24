@@ -15,7 +15,7 @@ const QuizFooter = () => {
         </Text>
 
         <Text>
-          j<Text dimColor> / </Text>k <Text dimColor>change answer</Text>
+          tab <Text dimColor>change answer</Text>
         </Text>
 
         <Text>
